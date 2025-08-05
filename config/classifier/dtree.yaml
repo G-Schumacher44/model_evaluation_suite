@@ -1,0 +1,74 @@
+
+
+run_to_execute: "decision_tree_classifier_run"
+
+decision_tree_classifier_run:
+  run_id: "dtree_demo_01"
+  task_type: "classification"
+  notebook_mode: true
+  logging: "auto"
+
+  pre_model_diagnostics:
+    run: true
+    export_reports: true
+    export_html_report: true
+    vif_threshold: 10.0
+    skewness_threshold: 0.75
+
+  paths:
+    input_data: "data/input_data/salifort_50k.csv"
+    train_data_path: "data/dev_data/train_data.csv"
+    test_data_path: "data/dev_data/test_data.csv"
+    reports_dir: "exports/reports"
+    plots_dir: "exports/plots"
+    model_export_dir: "models"
+    metrics_log: "exports/reports/model_metrics_log.csv"
+    log_dir: "logs"
+
+  modeling:
+    target_column: "left"
+    pipeline_factory:
+      name: "DecisionTree"
+      registered_name: "dtree_demo_01"
+      numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction']
+      categorical_features: ['Department', 'salary']
+      params:
+        max_depth: 10
+        min_samples_leaf: 4
+        criterion: "gini"
+        class_weight: "balanced"
+        random_state: 42
+    feature_engineering:
+      run: true
+      module: "model_eval_suite.modeling.feature_engineering"
+      class_name: "HREngineer"
+    hyperparameter_tuning:
+      run: false
+      cv_folds: 5
+      scoring: 'f1'
+      param_grid: {}
+
+  evaluation:
+    run: true
+    export_xlsx_summary: false
+    export_html_dashboard: true
+    compare_to_baseline: "gnb_demo_01"
+    explainability:
+      run_shap: true
+      shap_sample_size: 2000
+    plots:
+      confusion_matrix: { save: true }
+      roc_curve: { save: true }
+      pr_curve: { save: true }
+      learning_curve: { save: true }
+      calibration_curve: { save: true }
+      threshold_plot: { save: true }
+      permutation_importance: { save: true }
+      lift_curve: { save: true }
+      cumulative_gain: { save: true }
+      shap_summary: { save: true }
+      feature_distributions: { save: true }
+      predicted_vs_actual: { save: true }
+      residuals_plot: { save: true }
+      residuals_histogram: { save: true }
+      qq_plot: { save: true }

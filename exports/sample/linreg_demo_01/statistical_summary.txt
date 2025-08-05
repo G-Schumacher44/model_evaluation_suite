@@ -1,0 +1,43 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   left   R-squared:                       0.336
+Model:                            OLS   Adj. R-squared:                  0.336
+Method:                 Least Squares   F-statistic:                     950.0
+Date:                Sat, 12 Jul 2025   Prob (F-statistic):               0.00
+Time:                        22:06:11   Log-Likelihood:                -7042.4
+No. Observations:               30000   AIC:                         1.412e+04
+Df Residuals:                   29983   BIC:                         1.426e+04
+Df Model:                          16                                         
+Covariance Type:            nonrobust                                         
+==================================================================================================
+                                     coef    std err          t      P>|t|      [0.025      0.975]
+--------------------------------------------------------------------------------------------------
+const                           -9.38e+09   8.47e+10     -0.111      0.912   -1.75e+11    1.57e+11
+num__number_project               -0.7656      0.007   -111.520      0.000      -0.779      -0.752
+num__average_montly_hours         -0.5822      0.006   -103.817      0.000      -0.593      -0.571
+num__time_spend_company            0.0440      0.002     24.221      0.000       0.040       0.048
+num__project_hours_interaction     1.1377      0.010    114.724      0.000       1.118       1.157
+cat__Department_IT             -1.596e+09   1.44e+10     -0.111      0.912   -2.99e+10    2.67e+10
+cat__Department_RandD          -1.596e+09   1.44e+10     -0.111      0.912   -2.99e+10    2.67e+10
+cat__Department_accounting     -1.596e+09   1.44e+10     -0.111      0.912   -2.99e+10    2.67e+10
+cat__Department_hr             -1.596e+09   1.44e+10     -0.111      0.912   -2.99e+10    2.67e+10
+cat__Department_management     -1.596e+09   1.44e+10     -0.111      0.912   -2.99e+10    2.67e+10
+cat__Department_marketing      -1.596e+09   1.44e+10     -0.111      0.912   -2.99e+10    2.67e+10
+cat__Department_product_mng    -1.596e+09   1.44e+10     -0.111      0.912   -2.99e+10    2.67e+10
+cat__Department_sales          -1.596e+09   1.44e+10     -0.111      0.912   -2.99e+10    2.67e+10
+cat__Department_support        -1.596e+09   1.44e+10     -0.111      0.912   -2.99e+10    2.67e+10
+cat__Department_technical      -1.596e+09   1.44e+10     -0.111      0.912   -2.99e+10    2.67e+10
+cat__salary_high                1.098e+10   9.92e+10      0.111      0.912   -1.83e+11    2.05e+11
+cat__salary_low                 1.098e+10   9.92e+10      0.111      0.912   -1.83e+11    2.05e+11
+cat__salary_medium              1.098e+10   9.92e+10      0.111      0.912   -1.83e+11    2.05e+11
+==============================================================================
+Omnibus:                     5300.508   Durbin-Watson:                   2.016
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             9069.694
+Skew:                           1.163   Prob(JB):                         0.00
+Kurtosis:                       4.360   Cond. No.                     1.50e+15
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The smallest eigenvalue is 3.18e-26. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.

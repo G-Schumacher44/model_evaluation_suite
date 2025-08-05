@@ -1,0 +1,28 @@
+# ------------------------------------------------------------
+# 🧪 Example Config: Data Preparation
+#
+# This YAML file defines input and output paths and target column
+# for running the one-time data split used by the data_prep module.
+#
+# To run:
+#   from model_eval_suite.data_prep import main
+#   main(config_path="config/data_prep.yaml")
+#
+# This will:
+#   - Load the raw dataset
+#   - Stratified split into: holdout (20%) and dev (80%)
+#   - Further split dev into train/test (75/25)
+#   - Save resulting files to dev/ and holdout/ folders
+# ------------------------------------------------------------
+paths:
+  input_data: "data/input_data/example.csv"       # Raw input CSV
+  train_data_path: "data/dev_data/train_data.csv"      # Output path for training set
+  test_data_path: "data/dev_data/test_data.csv"        # Output path for testing set
+  holdout_data_path: "data/holdout_data/holdout_data.csv"  # Output path for holdout set
+
+modeling:
+  target_column: "left"  # Column name to stratify splits by (target variable)
+  # Input Data Expectations:
+  # - Numeric features should be clean numbers (int or float)
+  # - Categorical features should be string values (e.g., "Sales", "High")
+  # - No missing values in required columns (unless handled in pipeline)

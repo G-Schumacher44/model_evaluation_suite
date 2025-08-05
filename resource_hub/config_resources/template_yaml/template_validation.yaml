@@ -1,0 +1,19 @@
+# config/validation_override.yaml
+mlflow_tracking_uri: "mlruns"
+model_source:
+  name: "example_model"
+  version: "1" 
+holdout_data_path: "data/holdout_data/holdout_data.csv"
+target_column: "example"
+report_name: "example_report"
+production_tag: "Production-Candidate"
+notebook_mode: true
+segmentation_columns:
+  - "example"
+numeric_features:
+  - 'example'
+categorical_features:
+  - 'example'
+baseline_model:
+  name: ""    
+  version: ""  

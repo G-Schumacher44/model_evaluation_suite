@@ -1,0 +1,23 @@
+# config/validation_override.yaml
+mlflow_tracking_uri: "mlruns"
+model_source:
+  name: "xgb_demo_01"
+  version: "1" 
+holdout_data_path: "data/holdout_data/holdout_data.csv"
+target_column: "left"
+report_name: "xgb_demo_01_production_validation"
+production_tag: "Production-Candidate"
+notebook_mode: true
+segmentation_columns:
+  - "Department"
+  - "salary"
+numeric_features:
+  - 'number_project'
+  - 'average_montly_hours'
+  - 'time_spend_company'
+categorical_features:
+  - 'Department'
+  - 'salary'
+baseline_model:
+  name: "logreg_baseline_01"
+  version: "1"

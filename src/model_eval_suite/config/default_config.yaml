@@ -1,0 +1,288 @@
+# Default run to execute if no override is provided
+run_to_execute: "random_forest_classifier_run"
+
+# ===================================================================
+#  Reusable Component Blocks (Anchors)
+# ===================================================================
+
+
+# Base configuration applicable to all runs
+base_config: &base_config
+  notebook_mode: true
+  logging: "auto"
+
+  pre_model_diagnostics:
+    run: true
+    export_reports: true
+    export_html_report: true
+    vif_threshold: 10.0
+    skewness_threshold: 0.75
+  paths:
+    input_data: "data/input_data/salifort_50k.csv"
+    train_data_path: "data/dev_data/train_data.csv" 
+    test_data_path: "data/dev_data/test_data.csv"   
+    reports_dir: "exports/reports"
+    plots_dir: "exports/plots"
+    model_export_dir: "models"
+    metrics_log: "exports/reports/model_metrics_log.csv"
+    log_dir: "logs"
+  modeling: &base_modeling
+    target_column: "left"
+    test_size: 0.2
+    feature_engineering:
+      run: true
+      module: "model_eval_suite.modeling.feature_engineering"
+      class_name: "HREngineer"
+    hyperparameter_tuning:
+      run: false
+      cv_folds: 5
+      scoring: 'f1'
+      param_grid: {}
+  evaluation: &base_evaluation
+    run: true
+    export_xlsx_summary: false
+    export_html_dashboard: true
+    compare_to_baseline: null
+    explainability:
+      run_shap: true
+      shap_sample_size: 2000
+    plots:
+      confusion_matrix: { save: true }
+      roc_curve: { save: true }
+      pr_curve: { save: true }
+      learning_curve: { save: true }
+      calibration_curve: { save: true }
+      threshold_plot: { save: true }
+      permutation_importance: { save: true }
+      lift_curve: { save: true }
+      cumulative_gain: { save: true }
+      shap_summary: { save: true }
+      feature_distributions: {save: true}
+      # --- ADD REGRESSION PLOTS ---
+      predicted_vs_actual: {save: true}
+      residuals_plot: {save: true}
+      residuals_histogram: {save: true}
+      qq_plot: {save: true}
+
+# --- Model-specific parameter blocks (RENAMED and CORRECTED) ---
+
+random_forest_classifier_model: &random_forest_classifier_model
+  name: "RandomForest"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params:
+    n_estimators: 100
+    max_depth: 12
+    min_samples_leaf: 2
+    random_state: 42
+    class_weight: 'balanced'
+
+logistic_regression_classifier_model: &logistic_regression_classifier_model
+  name: "LogisticRegression"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params:
+    penalty: 'l2'
+    solver: 'liblinear'
+    class_weight: 'balanced'
+    random_state: 42
+    C: 1.0
+
+xgboost_classifier_model: &xgboost_classifier_model
+  name: "XGBoost"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params:
+    n_estimators: 100
+    max_depth: 5
+    learning_rate: 0.1
+    objective: 'binary:logistic'
+    eval_metric: 'logloss'
+    random_state: 42
+
+svc_classifier_model: &svc_classifier_model
+  name: "SVC"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params:
+    kernel: 'rbf'
+    C: 1.0
+    gamma: 'scale'
+    random_state: 42
+    probability: True
+
+gaussian_nb_classifier_model: &gaussian_nb_classifier_model
+  name: "GaussianNB"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params: {}
+
+decision_tree_classifier_model: &decision_tree_classifier_model
+  name: "DecisionTree"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params:
+    max_depth: 10
+    min_samples_leaf: 4
+    criterion: 'gini'
+    class_weight: 'balanced'
+    random_state: 42
+
+linear_regression_model: &linear_regression_model
+  name: "LinearRegression"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params: {} # LinearRegression has no major hyperparameters to set here
+
+random_forest_regressor_model: &random_forest_regressor_model # <-- ADDED
+  name: "RandomForestRegressor"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params:
+    n_estimators: 100
+    max_depth: 10
+    min_samples_leaf: 4
+    random_state: 42
+
+xgboost_regressor_model: &xgboost_regressor_model # <-- ADDED
+  name: "XGBRegressor"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params:
+    n_estimators: 100
+    max_depth: 5
+    learning_rate: 0.1
+    objective: 'reg:squarederror' # Objective for regression
+    random_state: 42
+
+decision_tree_regressor_model: &decision_tree_regressor_model # <-- ADDED
+  name: "DecisionTreeRegressor"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params:
+    max_depth: 10
+    min_samples_leaf: 4
+    random_state: 42
+
+svr_regressor_model: &svr_regressor_model # <-- ADDED
+  name: "SVR"
+  registered_name: null
+  numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
+  categorical_features: ['Department', 'salary']
+  params:
+    kernel: 'rbf'
+    C: 1.0
+    gamma: 'scale'
+
+# ===================================================================
+#  Runnable Experiment Definitions (RENAMED)
+# ===================================================================
+
+random_forest_classifier_run:
+  run_id: "rf_classifier_01"
+  task_type: "classification"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *random_forest_classifier_model
+
+random_forest_regressor_run: 
+  run_id: "rf_regressor_01"
+  task_type: "regression"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *random_forest_regressor_model
+
+logistic_regression_classifier_run:
+  run_id: "logreg_classifier_01"
+  task_type: "classification"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *logistic_regression_classifier_model
+
+xgboost_classifier_run:
+  run_id: "xgb_classifier_01"
+  task_type: "classification"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *xgboost_classifier_model
+
+xgboost_regressor_run: 
+  run_id: "xgb_regressor_01"
+  task_type: "regression"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *xgboost_regressor_model
+
+svc_classifier_run:
+  run_id: "svc_classifier_01"
+  task_type: "classification"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *svc_classifier_model
+
+svr_regressor_run: 
+  run_id: "svr_regressor_01"
+  task_type: "regression"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *svr_regressor_model
+
+gaussian_nb_classifier_run:
+  run_id: "gnb_classifier_01"
+  task_type: "classification"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *gaussian_nb_classifier_model
+
+decision_tree_classifier_run:
+  run_id: "dtree_classifier_01"
+  task_type: "classification"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *decision_tree_classifier_model
+
+decision_tree_regressor_run: 
+  run_id: "dtree_regressor_01"
+  task_type: "regression"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *decision_tree_regressor_model
+
+linear_regression_run:
+  run_id: "linreg_regressor_01"
+  task_type: "regression"
+  <<: *base_config
+  modeling:
+    <<: *base_modeling
+    pipeline_factory: *linear_regression_model
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,85 @@
+######################################################################
+# Example Modeling YAML
+#
+# This file demonstrates a fully structured modeling configuration 
+# for the model evaluation suite. Use this as a tutorial template 
+# to create your own override YAML files.
+#
+# Edit only what you need! Leave fields blank if unsure — the engine 
+# will fill in defaults based on the selected model block.
+#
+# Required for valid override:
+# - Set `run_to_execute` to the name of the run block below
+# - Set `target_column`, `pipeline_factory.name`, and features list
+# - Use the run block name that matches your model type (e.g. `svc_classifier_run`)
+#
+# This override will be deep-merged with the system default config.
+######################################################################
+
+run_to_execute: ""  # Name of the run block defined below to execute
+
+gaussian_nb_classifier_run: # Replace with specific model run
+  run_id: ""  # Unique identifier for this experiment run
+  task_type: ""  # Must be either 'classification' or 'regression'
+  notebook_mode: true  # Enables rich output for notebook use
+  logging: "auto"  # Controls logging level (e.g., 'auto', 'info', 'debug')
+
+  pre_model_diagnostics:
+    run: true  # ✅ Whether to run pre-model data diagnostics
+    export_reports: true  # Save diagnostics as flat files
+    export_html_report: true  # Export interactive HTML diagnostics
+    vif_threshold: 10.0  # VIF collinearity warning threshold
+    skewness_threshold: 0.75  # Skewness warning threshold
+
+  paths:
+    input_data: "data/input_data/example.csv"  # Source data file
+    train_data_path: "data/dev_data/train_data.csv"  # Output path for training data
+    test_data_path: "data/dev_data/test_data.csv"  # Output path for testing data
+    reports_dir: "exports/reports"  # Folder for CSV/XLSX summary reports
+    plots_dir: "exports/plots"  # Folder to save evaluation plots
+    model_export_dir: "models"  # Saved model directory
+    metrics_log: "exports/reports/model_metrics_log.csv"  # Append metrics here
+    log_dir: "logs"  # Store system logs here
+
+  modeling:
+    target_column: ""  # Name of the target column in dataset
+    pipeline_factory:
+      name: ""  # Name of the estimator (e.g., "LogisticRegression")
+      registered_name: ""  # Optional MLflow model name override
+      numeric_features: []  # List of numeric feature names
+      categorical_features: []  # List of categorical feature names
+      params: {}  # Estimator-specific hyperparameters
+    feature_engineering:
+      run: true  # Enable or disable custom feature engineer
+      module: "model_eval_suite.modeling.feature_engineering"  # Module path for class
+      class_name: ""  # Name of the feature engineering class
+    hyperparameter_tuning:
+      run: false  # Enable GridSearchCV if true
+      cv_folds: 5  # Cross-validation folds
+      scoring: 'f1'  # Scoring metric used during tuning
+      param_grid: {}  # Grid of hyperparameters to search
+
+  evaluation:
+    run: true  # ✅ Enable evaluation step
+    export_xlsx_summary: false  # Export evaluation results as Excel
+    export_html_dashboard: true  # Generate interactive dashboard
+    compare_to_baseline: null  # Optionally compare against a prior model
+    explainability:
+      run_shap: true  # Generate SHAP explainability
+      shap_sample_size: 2000  # Sample size for SHAP plots
+    plots:
+      confusion_matrix: { save: true }  # ✅ Classification only
+      roc_curve: { save: true }  # ✅ Classification only
+      pr_curve: { save: true }  # ✅ Classification only
+      learning_curve: { save: true }  # Useful for all models
+      calibration_curve: { save: true }  # ⚠️ Classifier-only
+      threshold_plot: { save: true }  # ✅ Classifier only
+      permutation_importance: { save: true }  # Feature importance
+      lift_curve: { save: true }  # ✅ Classification only
+      cumulative_gain: { save: true }  # ✅ Classification only
+      shap_summary: { save: true }  # Global SHAP visualization
+      feature_distributions: { save: true }  # Input data summary
+      predicted_vs_actual: { save: true }  # Regression only
+      residuals_plot: { save: true }  # Regression residual analysis
+      residuals_histogram: { save: true }  # Histogram of residuals
+      qq_plot: { save: true }  # Normality check of residuals

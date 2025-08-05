@@ -1,0 +1,58 @@
+[project]
+name = "model_eval_suite"
+version = "1.0.0"
+description = "A YAML-driven ML model evaluation toolkit."
+authors = [
+  { name = "Garrett Schumacher", email = "me@garrettschumacher.com" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "pandas",
+  "numpy",
+  "scikit-learn",
+  "xgboost",
+  "statsmodels",
+  "scipy",
+  "matplotlib",
+  "seaborn",
+  "pyarrow",
+  "mlflow>=2.10", # Specify a modern version of mlflow
+  "shap",
+  "joblib",
+  "pyyaml",
+  "jupyter",
+  "ipykernel",
+  "openpyxl",
+  "ipywidgets",
+  "pydantic",
+  "protobuf<4"  # Explicitly constrain protobuf to avoid conflicts
+]
+
+[project.scripts]
+# Main runner for experiments
+model-eval = "model_eval_suite.runner:main"
+prep-data = "model_eval_suite.data_prep:main"
+validate-champion = "model_eval_suite.validate_champion:main"
+
+[project.optional-dependencies]
+stats = ["statsmodels"]  # <-- MOVED HERE
+dev = [
+  "black",
+  "pylint",
+  "pytest"
+]
+
+[tool.model_eval_suite]
+tracking_uri = "file:./mlruns"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+# --- CORRECTED PACKAGE LIST ---
+include = [
+  "model_eval_suite",
+  "model_eval_suite.classification", 
+  "model_eval_suite.config",         
+  "model_eval_suite.modeling",
+  "model_eval_suite.utils"
+]

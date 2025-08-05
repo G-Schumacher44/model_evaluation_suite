@@ -1,0 +1,31 @@
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:                   left   No. Observations:                10000
+Model:                          Logit   Df Residuals:                     9984
+Method:                           MLE   Df Model:                           15
+Date:                Sat, 12 Jul 2025   Pseudo R-squ.:                  0.4052
+Time:                        21:19:13   Log-Likelihood:                -2711.5
+converged:                       True   LL-Null:                       -4558.9
+Covariance Type:            nonrobust   LLR p-value:                     0.000
+==================================================================================================
+                                     coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------------------
+const                             -2.2303        nan        nan        nan         nan         nan
+num__number_project               -8.5158      0.215    -39.550      0.000      -8.938      -8.094
+num__average_montly_hours         -5.3731      0.135    -39.667      0.000      -5.639      -5.108
+num__time_spend_company            0.4686      0.033     14.106      0.000       0.404       0.534
+num__project_hours_interaction    11.7673      0.289     40.709      0.000      11.201      12.334
+cat__Department_IT                -0.4985        nan        nan        nan         nan         nan
+cat__Department_RandD             -0.6335        nan        nan        nan         nan         nan
+cat__Department_accounting        -0.0861        nan        nan        nan         nan         nan
+cat__Department_hr                 0.0981        nan        nan        nan         nan         nan
+cat__Department_management        -0.4156        nan        nan        nan         nan         nan
+cat__Department_marketing         -0.2901        nan        nan        nan         nan         nan
+cat__Department_product_mng       -0.1152        nan        nan        nan         nan         nan
+cat__Department_sales             -0.0777        nan        nan        nan         nan         nan
+cat__Department_support           -0.1976        nan        nan        nan         nan         nan
+cat__Department_technical         -0.0142        nan        nan        nan         nan         nan
+cat__salary_high                  -2.0732        nan        nan        nan         nan         nan
+cat__salary_low                    0.1745        nan        nan        nan         nan         nan
+cat__salary_medium                -0.3316        nan        nan        nan         nan         nan
+==================================================================================================

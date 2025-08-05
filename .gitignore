@@ -1,0 +1,69 @@
+# Bytecode and cache
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.pyo
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Jupyter
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs and debugging
+*.log
+*.out
+*.err
+coverage.xml
+.prof
+
+# Package/build artifacts
+*.egg-info/
+dist/
+build/
+mlruns/
+
+# Pip-related
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Test environments
+.tox/
+.nox/
+.cache/
+.pytest_cache/
+htmlcov/
+
+# Data exports
+*.csv
+*.xlsx
+*.joblib
+*.pkl
+*.sav
+exports/*
+!exports/sample/
+!exports/sample/** 
+reports/
+
+!environment_full.yml
+!requirements.txt
+
+!resource_hub/
+!resource_hub/CLI_resources/
+!resource_hub/config_resources/
+!resource_hub/modeling_resources/
+!resource_hub/notebook_resources/
+!resource_hub/hub_index.md
+!resource_hub/usage_guide.md

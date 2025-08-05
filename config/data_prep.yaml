@@ -1,0 +1,8 @@
+paths:
+  input_data: "data/input_data/salifort_50k.csv"
+  train_data_path: "data/dev_data/train_data.csv"
+  test_data_path: "data/dev_data/test_data.csv"
+  holdout_data_path: "data/holdout_data/holdout_data.csv"
+
+modeling:
+  target_column: "left"

@@ -1,0 +1,68 @@
+# ---
+# 🧪 Model Evaluation Suite - Validation Config Template
+#
+# This file defines a validation configuration used to evaluate a trained model
+# (loaded from the MLflow Model Registry) against a holdout dataset. It is used
+# with `validate_champion.py` to generate performance dashboards, segmentation plots,
+# and audit alerts for a given model version.
+#
+# Edit this file to specify your MLflow model details, holdout test data,
+# and reporting controls.
+# ---
+# ---
+# 🧪 Example Usage
+# 
+# To run this validation config from a script or notebook:
+#
+# Python:
+# from model_eval_suite.validate_champion import validate_and_display
+# validate_and_display("example_config/example_validation_template.yaml")
+#
+# CLI (if supported):
+# python -m model_eval_suite.validate_champion --config example_config/example_validation_template.yaml
+# ---
+
+# MLflow tracking URI — local or remote tracking server
+mlflow_tracking_uri: "mlruns"
+
+# Source model to validate (from MLflow Registry)
+model_source:
+  name: "LinearRegression_test"
+  version: "1" 
+
+# Path to the holdout dataset used for validation
+holdout_data_path: "data/holdout_data/holdout_data.csv"
+
+# Column name containing the ground truth label
+target_column: "left"
+
+# Unique name for this validation run (used in filenames and logging)
+report_name: "linear_regression_run01_production_validation"
+
+# Optional MLflow tag to apply if validation passes (e.g., "Production")
+production_tag: "Production-Candidate"
+
+# Whether to render results inline for Jupyter notebooks
+notebook_mode: true
+
+# Columns to group by for segmentation plots (e.g., salary, department)
+segmentation_columns:
+  - "Department"
+  - "salary"
+
+# List of numeric features used by the model (for SHAP and validation)
+numeric_features:
+  - 'number_project'
+  - 'average_montly_hours'
+  - 'time_spend_company'
+
+# List of categorical features used by the model (for SHAP and validation)
+categorical_features:
+  - 'Department'
+  - 'salary'
+
+# Baseline model used for comparison against the champion model
+baseline_model:
+  name: "linear_baseline_01"     # Registered MLflow model name
+  version: "1"                   # Specific version or stage (e.g., "1", "Staging", "Production")
+
