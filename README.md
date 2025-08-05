@@ -17,7 +17,7 @@ A modular Python package for evaluating machine learning models across regressio
 
 ---
 
-## 📦 TLDR;
+## 📦 TL;DR
 
 - Drop-in evaluation engine for scikit-learn pipelines  
 - Modular explainability and validation dashboards  
@@ -27,6 +27,21 @@ A modular Python package for evaluating machine learning models across regressio
 - Audit alert system for overfitting, instability, and regressions  
 - Interactive dashboards with HTML export support  
 - Designed for analysts, MLOps teams, and reproducible portfolios  
+
+<details>
+<summary>📌 Data Analyst Portfolio Highlights</summary>
+
+If you're reviewing this repository as part of a hiring process, start here:
+
+- [`notebooks/demo.ipynb`](notebooks/demo.ipynb): Full modeling run with commentary, inline QA, SHAP explanations, and visual diagnostics — simulates a real analyst’s interpretability workflow  
+- [`exports/sample/`](exports/sample/): Output artifacts from live runs, including statistical summaries, validation reports, feature distribution plots, and production-ready dashboards  
+- [`resource_hub/notebook_resources/notebook_walkthrough.md`](resource_hub/notebook_resources/notebook_walkthrough.md): Step-by-step narrative of how the evaluation system works — from raw model to stakeholder report  
+- [`resource_hub/hub_index.md`](resource_hub/hub_index.md): Analyst-focused documentation portal covering every module: data profiling, schema validation, imputation, certification, audit logic, and more  
+- [`resource_hub/config_resources/config_guide.md`](resource_hub/config_resources/config_guide.md): YAML-driven QA infrastructure showing how data analysts can configure and enforce quality gates without rewriting code  
+
+This system is designed for analysts who want to **interpret, validate, and communicate model results**, not just build them. It emphasizes **data quality**, **explainability**, and **reproducibility** — key pillars of modern analytics work.
+
+</details>
 
 ## 📐 What This Suite Includes
 
