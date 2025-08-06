@@ -33,7 +33,9 @@ A modular Python package for evaluating machine learning models across regressio
 
 If you're reviewing this repository as part of a hiring process, start here:
 
-- [`notebooks/demo.ipynb`](notebooks/demo.ipynb): Full modeling run with commentary, inline QA, SHAP explanations, and visual diagnostics — simulates a real analyst’s interpretability workflow  
+- [`notebooks/demo.ipynb`](notebooks/demo.ipynb): Interactive walkthrough showcasing the evaluation suite’s capabilities — including model prep, performance diagnostics, and SHAP explanations — on a sample dataset. 
+  - [`notebooks/demo_notebook.pdf`](notebooks/demo_notebook.pdf): viewable PDF version of the demo notebook as a pdf file
+  - [`notebooks/demo_notebook.html`](notebooks/demo_notebook.html): download the demo notebook as a html file
 - [`exports/sample/`](exports/sample/): Output artifacts from live runs, including statistical summaries, validation reports, feature distribution plots, and production-ready dashboards  
 - [`resource_hub/notebook_resources/notebook_walkthrough.md`](resource_hub/notebook_resources/notebook_walkthrough.md): Step-by-step narrative of how the evaluation system works — from raw model to stakeholder report  
 - [`resource_hub/hub_index.md`](resource_hub/hub_index.md): Analyst-focused documentation portal covering every module: data profiling, schema validation, imputation, certification, audit logic, and more  
@@ -132,13 +134,18 @@ It’s designed for teams, for experimentation, and for scale — with modular c
 - [Annotated Config Examples](resource_hub/config_resources/annotated_example_yaml/) — Training + validation YAML examples
 - [General Template Config](resource_hub/config_resources/template_yaml/) — Empty YAML templates for quick setup
 - [YAML Template Bundle](resource_hub/config_resources/config.zip) — Downloadable starter config pack
+- [Sample Reports](exports/sample/): Output artifacts from live runs, including statistical summaries, validation reports, feature distribution plots, and production-ready dashboards  
 
 #### ⚙️ Modeling Resources
 - [Feature Engineering Guide](resource_hub/modeling_resources/feature_engineering.md) — How to plug in your own custom transformer
 - [MLflow Integration Guide](resource_hub/modeling_resources/MLFlow.md) — Setup, model registration, and tracking
 
 #### 📓 Notebook Resources
-- [Notebook Walkthrough](resource_hub/notebook_resources/notebook_walkthrough.md) — End-to-end workflow in Jupyter Notebooks
+- [Notebook Walkthrough](resource_hub/notebook_resources/notebook_walkthrough.md) — End-to-end workflow demo in Jupyter Notebooks
+- [Sample Reports](../exports/sample/): Example outputs from live runs — includes QA reports, validation logs, feature plots, and dashboard visuals
+- [notebooks/demo.ipynb](notebooks/demo.ipynb): Interactive walkthrough showcasing the evaluation suite’s capabilities
+  - [notebooks/demo_notebook.pdf](notebooks/demo_notebook.pdf): viewable PDF version of the demo notebook as a pdf file
+  - [notebooks/demo_notebook.html](notebooks/demo_notebook.html): download the demo notebook as a html file
 
 #### 🖥️ CLI Resources
 - [CLI Usage Guide](resource_hub/CLI_resources/cli_usage_guide.md) — End-to-end workflow in command-line.

@@ -27,7 +27,9 @@ resource_hub/
 │   └── MLFlow.md
 ├── notebook_resources/
 │   └── notebook_walkthrough.md
-├── CLI_resources/       # (coming soon)
+├── CLI_resources/
+│   └── cli_usage_guide.md
+└── hub_index.md
 
 ```
 
@@ -62,7 +64,12 @@ ___
 - [MLflow Integration Guide](modeling_resources/MLFlow.md) — Setup, model registration, and tracking
 
 #### 📓 Notebook Resources
-- [Notebook Walkthrough](notebook_resources/notebook_walkthrough.md) — End-to-end workflow in Jupyter
+- [Notebook Walkthrough](notebook_resources/notebook_walkthrough.md) — End-to-end workflow guide for Jupyter Notebooks
+- [Sample Reports](../exports/sample/): Example outputs from live runs — includes QA reports, validation logs, feature plots, and dashboard visuals
+- [notebooks/demo.ipynb](..notebooks/demo.ipynb): Interactive walkthrough showcasing the evaluation suite’s capabilities
+  - [notebooks/demo_notebook.pdf](../notebooks/demo_notebook.pdf): viewable PDF version of the demo notebook as a pdf file
+  - [notebooks/demo_notebook.html](../notebooks/demo_notebook.html): download the demo notebook as a html file
+
 
 #### 🖥️ CLI Resources
 - [CLI Usage Guide](CLI_resources/cli_usage_guide.md) — End-to-end workflow in command-line.

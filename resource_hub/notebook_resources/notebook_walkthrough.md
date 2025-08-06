@@ -80,6 +80,8 @@ See [config_resources](../config_resources/config_guide.md) for YAML configurati
 - Models registered to MLflow (if enabled)
 - Dashboards rendered inline or saved
 
+📎 [`View Sample Reports & Artifacts`](exports/sample/)
+
 ---
 
 ### 📎 Quicklinks
