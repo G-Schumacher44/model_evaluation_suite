@@ -142,7 +142,7 @@ It’s designed for teams, for experimentation, and for scale — with modular c
 
 #### 📓 Notebook Resources
 - [Notebook Walkthrough](resource_hub/notebook_resources/notebook_walkthrough.md) — End-to-end workflow demo in Jupyter Notebooks
-- [Sample Reports](/exports/sample/): Example outputs from live runs — includes QA reports, validation logs, feature plots, and dashboard visuals
+- [Sample Reports](/exports/sample/): Example outputs from live runs 
 - [notebooks/demo.ipynb](notebooks/demo.ipynb): Interactive walkthrough showcasing the evaluation suite’s capabilities
   - [notebooks/demo_notebook.pdf](notebooks/demo_notebook.pdf): viewable PDF version of the demo notebook as a pdf file
   - [notebooks/demo_notebook.html](notebooks/demo_notebook.html): download the demo notebook as a html file
