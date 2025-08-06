@@ -142,7 +142,7 @@ It’s designed for teams, for experimentation, and for scale — with modular c
 
 #### 📓 Notebook Resources
 - [Notebook Walkthrough](resource_hub/notebook_resources/notebook_walkthrough.md) — End-to-end workflow demo in Jupyter Notebooks
-- [Sample Reports](/exports/sample/): Example outputs from live runs 
+- [Sample Reports & Artifacts](/exports/sample/): Example outputs from live runs 
 - [notebooks/demo.ipynb](notebooks/demo.ipynb): Interactive walkthrough showcasing the evaluation suite’s capabilities
   - [notebooks/demo_notebook.pdf](notebooks/demo_notebook.pdf): viewable PDF version of the demo notebook as a pdf file
   - [notebooks/demo_notebook.html](notebooks/demo_notebook.html): download the demo notebook as a html file
@@ -395,12 +395,12 @@ The dashboard system provides a unified view of model quality, explainability, a
 <summary><strong>📃 Dashboard Snapshots</strong></summary>
 
 <div style="display: flex; gap: 20px; justify-content: center;">
-  <img src="repo_files/model_eval_prediag_dash_01.png" width="450"/>
-  <img src="repo_files/validation_dash_01.png" width="450"/>
+  <img src="repo_files/pre_diag.png" width="450"/>
+  <img src="repo_files/dist_pviewer.png" width="450"/>
 </div>
 <br>
 <div style="display: flex; justify-content: center; margin-top: 20px;">
-  <img src="repo_files/model_eval_dash_01.png" width="600"/>
+  <img src="repo_files/dash_main.png" width="600"/>
 </div>
 
 </details>
@@ -429,9 +429,9 @@ Reports are saved to: `data/reports/{run_id}/{run_id}_dashboard.html`
 <summary><strong>📸 Preview Screenshots</strong></summary>
 
 <p align="center">
-  <img src="repo_files/html_export_01.png" width="700"/>
+  <img src="repo_files/export_report_view.png" width="700"/>
   <br><br>
-  <img src="repo_files/html_export_02.png" width="700"/>
+  <img src="repo_files/explot_plot_view.png" width="700"/>
 </p>
 
 </details>
@@ -450,4 +450,4 @@ This project is licensed under the [MIT License](LICENSE).</file>
 
 
 ### 📎 Quicklinks
-> Return to the resource hub index: [Resource Hub Index](resource_hub/hub_index.md)  
+> Jump to the resource hub index: [Resource Hub Index](resource_hub/hub_index.md)  
