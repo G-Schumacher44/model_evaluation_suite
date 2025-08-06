@@ -55,8 +55,8 @@ ___
 - [Configuration Guide](config_resources/config_guide.md) — YAML structure, templates, and examples
 - [Model Factory Parameters](config_resources/model_factory_params.md) — Valid model names and hyperparameters
 - [Model Codex](config_resources/model_codex.md) — Supported estimators and pipeline behavior
-- [Annotated Config Examples](config_resources/template_yaml/) — Explainitory YAML files
-- [General Template Config](config_resources/annotated_example_yaml/) — YAML templates
+- [Annotated Config Examples](config_resources/annotated_example_yaml) — Explainitory YAML files
+- [General Template Config](config_resources/template_yaml) — YAML templates
 - [YAML Template Bundle](config_resources/config.zip) — Downloadable starter config pack
 
 #### ⚙️ Modeling Resources
