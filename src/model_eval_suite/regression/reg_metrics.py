@@ -74,21 +74,22 @@ def generate_audit_alerts(results: Dict, config: SuiteConfig) -> list:
     alerts = []
     current = results.get('metrics', {})
     baseline = results.get('baseline_metrics')
+    audit_config = config.evaluation.audits
 
     # Audit 1: R² too low
     r2 = current.get('r_squared', 0)
-    if r2 < 0.7:
+    if r2 < audit_config.r_squared_min_threshold:
         alerts.append(f"⚠️ Weak Fit: R-squared is low ({r2:.3f}), indicating poor model fit.")
 
     # Audit 2: High RMSE
     rmse = current.get('root_mean_squared_error', 0)
-    if rmse > 10000:
+    if rmse > audit_config.rmse_max_threshold:
         alerts.append(f"⚠️ High Error: RMSE is high ({rmse:,.2f}), indicating large prediction error.")
 
     # Audit 3: Regression vs baseline
     if baseline:
         baseline_r2 = baseline.get('r_squared', r2)
-        if r2 < baseline_r2 * 0.95:
+        if r2 < baseline_r2 * audit_config.performance_regression_r2_threshold_factor:
             alerts.append(f"⚠️ Regression Performance Drop: R² ({r2:.3f}) is more than 5% lower than baseline ({baseline_r2:.3f}).")
 
     return alerts

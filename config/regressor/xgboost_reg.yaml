@@ -61,6 +61,15 @@ xgboost_regressor_run:
     explainability:
       run_shap: true
       shap_sample_size: 2000
+    audits:
+      # Regression audit thresholds
+      r_squared_min_threshold: 0.7
+      rmse_max_threshold: 10000.0
+      performance_regression_r2_threshold_factor: 0.95
+      # Classification audit thresholds
+      overfitting_threshold_factor: 1.15
+      cv_std_threshold: 0.1
+      performance_regression_f1_threshold_factor: 0.95
     plots:
       predicted_vs_actual: { save: true }
       residuals_plot: { save: true }

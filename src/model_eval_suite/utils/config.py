@@ -53,12 +53,16 @@ class PlotConfig(BaseModel):
 
 # Settings for Audit Alerts
 class AuditConfig(BaseModel):
+    """Settings for Audit Alerts."""
     # Regression thresholds
-    r_squared_threshold: float = 0.6
-    rmse_threshold: float = 50000.0
-    # Add optional classification thresholds
-    accuracy_threshold: Optional[float] = 0.80
-    f1_score_threshold: Optional[float] = 0.75
+    r_squared_min_threshold: float = 0.7
+    rmse_max_threshold: float = 10000.0
+    performance_regression_r2_threshold_factor: float = 0.95
+
+    # Classification thresholds
+    overfitting_threshold_factor: float = 1.15
+    cv_std_threshold: float = 0.1
+    performance_regression_f1_threshold_factor: float = 0.95
 
  # Settings for evaluation outputs and visualizations
 class EvaluationConfig(BaseModel):
@@ -68,7 +72,7 @@ class EvaluationConfig(BaseModel):
     compare_to_baseline: Optional[str] = None
     plots: PlotConfig = Field(default_factory=PlotConfig)
     explainability: Optional[Dict[str, Any]] = None
-    audits: AuditConfig = AuditConfig()
+    audits: AuditConfig = Field(default_factory=AuditConfig)
     
  # Configuration for optional grid search tuning
 class HyperparameterTuningConfig(BaseModel):

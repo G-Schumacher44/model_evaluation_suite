@@ -101,23 +101,24 @@ def generate_audit_alerts(results: Dict, config: SuiteConfig) -> list:
     """Generates a list of warnings based on model performance metrics."""
     alerts = []
     current = results.get('metrics', {})
-    baseline = results.get('baseline_metrics') # Can be None
+    baseline = results.get('baseline_metrics')  # Can be None
+    audit_config = config.evaluation.audits
 
     # Check for overfitting based on F1 score gap
     train_f1 = current.get('train_f1', 0)
     test_f1 = current.get('test_f1', 0)
-    if train_f1 > test_f1 * 1.15: # 15% gap
+    if train_f1 > test_f1 * audit_config.overfitting_threshold_factor:
         alerts.append(f"⚠️ Overfitting Signal: Training F1 ({train_f1:.3f}) is significantly higher than Test F1 ({test_f1:.3f}).")
-    
+
     # Check for high variance across CV folds
     cv_std = current.get('cv_std_f1', 0)
-    if cv_std > 0.1: # High variance in CV
+    if cv_std > audit_config.cv_std_threshold:
         alerts.append(f"⚠️ High CV Variance: F1 standard deviation across folds is high ({cv_std:.3f}).")
-    
+
     # Compare current test F1 to baseline test F1
     if baseline:
         baseline_f1 = baseline.get('test_f1', 1.0)
-        if test_f1 < baseline_f1 * 0.95: # Performance dropped more than 5%
-             alerts.append(f"⚠️ Performance Regression: Test F1 ({test_f1:.3f}) is >5% lower than baseline ({baseline_f1:.3f}).")
+        if test_f1 < baseline_f1 * audit_config.performance_regression_f1_threshold_factor:
+            alerts.append(f"⚠️ Performance Regression: Test F1 ({test_f1:.3f}) is >5% lower than baseline ({baseline_f1:.3f}).")
 
     return alerts
