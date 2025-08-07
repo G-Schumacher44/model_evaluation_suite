@@ -54,7 +54,7 @@ htmlcov/
 *.sav
 exports/*
 !exports/sample/
-!exports/sample/** 
+!exports/sample/**
 reports/
 
 !environment_full.yml
