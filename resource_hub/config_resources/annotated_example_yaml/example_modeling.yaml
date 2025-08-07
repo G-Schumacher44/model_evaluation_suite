@@ -67,6 +67,16 @@ gaussian_nb_classifier_run: # Replace with specific model run
     explainability:
       run_shap: true  # Generate SHAP explainability
       shap_sample_size: 2000  # Sample size for SHAP plots
+    audits:
+      # ⚠️ Automated audit alert thresholds
+      # Regression audit thresholds
+      r_squared_min_threshold: 0.7  # Warn if R² is below this value
+      rmse_max_threshold: 10000.0  # Warn if RMSE is above this value
+      performance_regression_r2_threshold_factor: 0.95 # Warn if R² drops by more than (1 - factor) vs baseline
+      # Classification audit thresholds
+      overfitting_threshold_factor: 1.15  # Warn if train F1 is > (test F1 * factor)
+      cv_std_threshold: 0.1  # Warn if CV F1 standard deviation is > this value
+      performance_regression_f1_threshold_factor: 0.95 # Warn if F1 drops by more than (1 - factor) vs baseline
     plots:
       confusion_matrix: { save: true }  # ✅ Classification only
       roc_curve: { save: true }  # ✅ Classification only
