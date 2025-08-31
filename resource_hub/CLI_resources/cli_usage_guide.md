@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../../repo_files/hero_banner.png" width="1000"/>
+  <img src="../../repo_files/hero_banner.png" width="600"/>
   <br>
   <em>Model Evaluation + Interpretability Engine</em>
 </p>
