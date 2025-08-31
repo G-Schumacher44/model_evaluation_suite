@@ -1,5 +1,5 @@
 <file name=0 path=/Users/garrettschumacher/Documents/git_repos/model_evaluation_suite/README.md><p align="center">
-  <img src="../repo_files/dark_logo_banner.png" width="1000"/>
+  <img src="../repo_files/hero_banner.png" width="1000"/>
   <br>
   <em>Model Evaluation + Interpretability Engine</em>
 </p>
