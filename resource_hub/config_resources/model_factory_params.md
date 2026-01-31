@@ -6,7 +6,16 @@
 <p align="center">
   <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue">
   <img alt="Status" src="https://img.shields.io/badge/status-beta-yellow">
-  <img alt="Version" src="https://img.shields.io/badge/version-v0.1.0-blueviolet">
+  <img alt="Version" src="https://img.shields.io/badge/version-v0.2.0-blueviolet">
+  <br>
+  <a href="https://github.com/G-Schumacher44/model_evaluation_suite/actions/workflows/ci.yml">
+    <img alt="CI" src="https://github.com/G-Schumacher44/model_evaluation_suite/actions/workflows/ci.yml/badge.svg">
+  </a>
+  <a href="https://codecov.io/gh/G-Schumacher44/model_evaluation_suite">
+    <img alt="Coverage" src="https://codecov.io/gh/G-Schumacher44/model_evaluation_suite/branch/main/graph/badge.svg">
+  </a>
+  <img alt="Python" src="https://img.shields.io/badge/python-3.11+-blue">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-70%20passing-success">
 </p>
 
 # ⚙️ Model Factory Parameter Reference
