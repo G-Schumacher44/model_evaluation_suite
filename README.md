@@ -6,7 +6,16 @@
 <p align="center">
   <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue">
   <img alt="Status" src="https://img.shields.io/badge/status-beta-yellow">
-  <img alt="Version" src="https://img.shields.io/badge/version-v0.1.0-blueviolet">
+  <img alt="Version" src="https://img.shields.io/badge/version-v0.2.0-blueviolet">
+  <br>
+  <a href="https://github.com/G-Schumacher44/model_evaluation_suite/actions/workflows/ci.yml">
+    <img alt="CI" src="https://github.com/G-Schumacher44/model_evaluation_suite/actions/workflows/ci.yml/badge.svg">
+  </a>
+  <a href="https://codecov.io/gh/G-Schumacher44/model_evaluation_suite">
+    <img alt="Coverage" src="https://codecov.io/gh/G-Schumacher44/model_evaluation_suite/branch/main/graph/badge.svg">
+  </a>
+  <img alt="Python" src="https://img.shields.io/badge/python-3.11+-blue">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-68%20passing-success">
 </p>
 
 ---
@@ -19,14 +28,33 @@ A modular Python package for evaluating machine learning models across regressio
 
 ## 📦 TL;DR
 
-- Drop-in evaluation engine for scikit-learn pipelines  
-- Modular explainability and validation dashboards  
-- MLFlow integration for model tracking and reproducibility  
-- YAML-driven runner with CLI and notebook support  
-- SHAP, permutation importance, lift/PR/ROC curves  
-- Audit alert system for overfitting, instability, and regressions  
-- Interactive dashboards with HTML export support  
-- Designed for analysts, MLOps teams, and reproducible portfolios  
+- Drop-in evaluation engine for scikit-learn pipelines
+- Modular explainability and validation dashboards
+- MLFlow integration for model tracking and reproducibility
+- **Modern CLI with rich terminal output** - Just `model-eval run config.yaml`
+- SHAP, permutation importance, lift/PR/ROC curves
+- Audit alert system for overfitting, instability, and regressions
+- Interactive dashboards with HTML export support
+- Designed for analysts, MLOps teams, and reproducible portfolios
+
+## 🚀 Quick Start
+
+```bash
+# Install the suite
+pip install -e .
+
+# Generate a config template
+model-eval init --task classification --output my_config.yaml
+
+# Run evaluation pipeline
+model-eval run my_config.yaml
+
+# List available models
+model-eval list-models
+
+# Get help
+model-eval --help
+```  
 
 <details>
 <summary>📌 Data Analyst Portfolio Highlights</summary>
@@ -103,24 +131,34 @@ It’s designed for teams, for experimentation, and for scale — with modular c
 </details>
 
 <details>
-<summary><strong>🫆 version release v0.1.0</strong></summary>
+<summary><strong>🫆 version release v0.2.0</strong></summary>
+
+**v0.2.0 (Current)**
+- **Modern Click-based CLI** with 5 subcommands and rich terminal output
+- **CI/CD Pipeline**: GitHub Actions with 68 passing tests (28% coverage)
+- **MLflow SQLite Backend**: Migration from filesystem to SQLite for better performance
+- **Rich Terminal UI**: Colored output, formatted tables, and progress indicators
+- Comprehensive test suite with pytest, parallel execution, and coverage reporting
+- Support for both `-h` and `--help` flags across all commands
+- `environment.yml` for conda environment setup
+- Completely rewritten CLI documentation with examples and troubleshooting
 
 **v0.1.0**
 - Core evaluation engine for classification and regression tasks
-- YAML-driven pipeline with CLI and notebook support
+- YAML-driven pipeline with notebook support
 - Modular dashboard rendering with SHAP, audit alerts, and baseline comparison
-- Auto-logging to MLFlow & CSV for model traceability
-- Regression and classifier support with audit logic and explainer fallback
-- Binary classification only (F1, ROC AUC, etc.)
-- CLI-driven validation workflows and champion comparison
+- Auto-logging to MLflow & CSV for model traceability
+- Binary classification support (F1, ROC AUC, precision, recall, etc.)
+- Regression support with comprehensive metrics
+- Champion model validation workflows
 
-**Planned for v0.2.0**
+**Planned for v0.3.0**
 - Multiclass classification support (per-class metrics + confusion matrix)
-- Advanced plotting extension: Interactive plotting with export support
-- Streamlined stakeholder report: polished, printable HTML export
+- Advanced plotting: Interactive plots with export support
+- Streamlined stakeholder reports with polished HTML export
 - Performance drift monitoring across validation runs
-- Expand the test module to include end to end CLI smoke test, and extend to other critical modules
-  
+- End-to-end CLI smoke tests and expanded test coverage (targeting 50%+)
+
 </details>
 
 <details><summary>🔗 Resource Hub Links</summary>

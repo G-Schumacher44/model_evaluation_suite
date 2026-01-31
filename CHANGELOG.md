@@ -17,13 +17,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced MLflow model logging with pickle security warning suppression for trusted models
 
 ### Added
+
+- **Modern Click-based CLI**: New `model-eval` command-line interface with 5 subcommands
+  - `model-eval run` - Execute model evaluation pipelines
+  - `model-eval init` - Generate configuration templates interactively
+  - `model-eval prep` - Prepare and split datasets
+  - `model-eval validate` - Validate champion models
+  - `model-eval list-models` - Display available model types
+- Rich terminal output with colored text, formatted tables, and progress indicators
+- `environment.yml` for conda environment setup
 - `mlflow_tracking_uri` configuration option in `SuiteConfig` with default `"sqlite:///mlflow.db"`
 - Migration script (`scripts/migrate_mlflow_to_sqlite.py`) for users with existing filesystem data
 - Comprehensive migration guide ([MIGRATION.md](MIGRATION.md))
 - Updated MLflow documentation with SQLite best practices
+- Completely rewritten CLI usage guide with command reference, examples, and troubleshooting
 - `.claudeignore` file to optimize Claude Code IDE performance by excluding large data directories
 - Warning suppression for verbose third-party library loggers (alembic, mlflow.store.db.utils)
 - Warning suppression for SHAP JavaScript library messages in interactive notebooks
+- **CI/CD Pipeline**: GitHub Actions workflow for automated testing across Python 3.11/3.12 and Ubuntu/macOS
+- **Test Suite**: 68 unit and integration tests with 28% code coverage (exceeds 20% threshold)
+- Pytest configuration with parallel execution, coverage reporting, and HTML reports
+- Test fixtures for classification/regression data and trained models
+- Comprehensive tests for config loading, model factory, logging, feature engineering, and CLI
 
 ### Fixed
 - MLflow filesystem backend deprecation warnings no longer appear by default
