@@ -152,10 +152,18 @@ ignore = [
     "E501",   # line too long (handled by formatter)
     "B008",   # do not perform function calls in argument defaults
     "B905",   # zip() without explicit strict parameter
+    "B904",   # raise from within except - sometimes we want to replace the exception
     "N802",   # function name should be lowercase (scikit-learn style)
+    "N803",   # argument name should be lowercase (scikit-learn X, y convention)
     "N806",   # variable in function should be lowercase (scikit-learn X, y)
     "RET504", # unnecessary variable assignment before return
     "SIM108", # use ternary operator (sometimes less readable)
+    "PTH123", # open() vs Path.open() - both are fine, prefer gradual adoption
+    "PTH118", # os.path.join vs Path / - both are fine
+    "PTH112", # os.path.isdir vs Path.is_dir - both are fine
+    "PTH208", # os.listdir vs Path.iterdir - both are fine
+    "E402",   # module level import not at top - sometimes needed for conditional imports
+    "E722",   # bare except - sometimes acceptable for resilience
 ]
 
 [tool.ruff.lint.per-file-ignores]
