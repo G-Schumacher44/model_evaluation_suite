@@ -33,12 +33,33 @@ mlflow ui --port 5050 --host 0.0.0.0
 
 ---
 
-## 📂 Set a Custom Backend Store (Optional)
+## 📂 Backend Store: SQLite (Recommended)
 
-To store logs outside the default `mlruns/` directory:
+**Starting in v0.2.0**, the suite uses SQLite as the default MLflow backend instead of the filesystem.
 
-```bash
-mlflow ui --backend-store-uri /path/to/storage
+**Why SQLite?**
+
+- ✅ Better query performance
+- ✅ Proper ACID transactions
+- ✅ Future-proof (filesystem backend is deprecated in MLflow 2.18+)
+- ✅ Easier to backup (single `mlflow.db` file)
+
+**Default Configuration:**
+
+```yaml
+mlflow_tracking_uri: "sqlite:///mlflow.db"
+```
+
+**To use filesystem (legacy):**
+
+```yaml
+mlflow_tracking_uri: "file:./mlruns"
+```
+
+**To use a remote server:**
+
+```yaml
+mlflow_tracking_uri: "http://localhost:5000"
 ```
 
 ---

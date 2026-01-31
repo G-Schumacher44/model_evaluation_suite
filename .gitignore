@@ -14,6 +14,9 @@ venv/
 .vscode/
 *.code-workspace
 
+# Claude Code
+.claudeignore
+
 # Jupyter
 .ipynb_checkpoints/
 *.nbconvert.ipynb
@@ -33,7 +36,12 @@ coverage.xml
 *.egg-info/
 dist/
 build/
+
+# MLflow tracking
 mlruns/
+mlflow.db
+mlflow.db-shm
+mlflow.db-wal
 
 # Pip-related
 pip-log.txt
