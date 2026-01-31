@@ -6,7 +6,7 @@
 <p align="center">
   <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue">
   <img alt="Status" src="https://img.shields.io/badge/status-beta-yellow">
-  <img alt="Version" src="https://img.shields.io/badge/version-v0.1.0-blueviolet">
+  <img alt="Version" src="https://img.shields.io/badge/version-v0.2.0-blueviolet">
 </p>
 
 # 🚀 Usage Guide: model_evaluation_suite

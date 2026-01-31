@@ -15,7 +15,7 @@
     <img alt="Coverage" src="https://codecov.io/gh/G-Schumacher44/model_evaluation_suite/branch/main/graph/badge.svg">
   </a>
   <img alt="Python" src="https://img.shields.io/badge/python-3.11+-blue">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-68%20passing-success">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-70%20passing-success">
 </p>
 
 ---
