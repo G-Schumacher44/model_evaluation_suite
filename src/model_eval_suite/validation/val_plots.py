@@ -108,8 +108,10 @@ def plot_performance_by_segment(X: pd.DataFrame, y_true: pd.Series, y_pred: pd.S
     data['true'] = y_true
     data['pred'] = y_pred
     
-    # Compute F1 per segment
-    f1_scores = data.groupby(segment_column).apply(lambda g: f1_score(g['true'], g['pred']))
+    # Compute F1 per segment (exclude grouping columns to avoid pandas deprecation warning)
+    f1_scores = data.groupby(segment_column, group_keys=False).apply(
+        lambda g: f1_score(g['true'], g['pred']), include_groups=False
+    )
     
     # Plot segment-wise F1 scores
     fig, ax = plt.subplots(figsize=(10, 6))

@@ -214,15 +214,19 @@ class EvaluationDashboard:
                         base_value = explainer.expected_value
                         shap_values_for_instance = shap_values_obj.values[idx]
 
-                    force_plot = shap.force_plot(
-                        base_value,
-                        shap_values_for_instance,
-                        data_for_shap.iloc[idx, :],
-                        matplotlib=False
-                    )
-                    display(IHTML(force_plot.html()))
+                    # Suppress JavaScript library warnings from SHAP
+                    import warnings
+                    with warnings.catch_warnings():
+                        warnings.filterwarnings('ignore', message='.*Javascript library not loaded.*')
+                        force_plot = shap.force_plot(
+                            base_value,
+                            shap_values_for_instance,
+                            data_for_shap.iloc[idx, :],
+                            matplotlib=False
+                        )
+                        display(IHTML(force_plot.html()))
                 except Exception as e:
-                    print(f"⚠️ Failed to render SHAP force plot: {e}")
+                    print(f"ℹ️ Interactive SHAP visualization unavailable (static plots available in Evaluation Plots tab)")
 
         explain_button.on_click(on_explain_click)
         

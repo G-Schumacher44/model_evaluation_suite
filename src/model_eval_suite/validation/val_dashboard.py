@@ -128,15 +128,22 @@ class ValidationDashboard:
                 if not 0 <= idx < len(data_for_shap):
                     print(f"Error: Index must be between 0 and {len(data_for_shap) - 1}")
                     return
-                
-                # Render SHAP force plot
-                force_plot = shap.force_plot(
-                    explainer.expected_value, 
-                    shap_values_obj.values[idx], 
-                    data_for_shap.iloc[idx, :], 
-                    matplotlib=False
-                )
-                display(IHTML(force_plot.html()))
+
+                try:
+                    # Suppress JavaScript library warnings from SHAP
+                    import warnings
+                    with warnings.catch_warnings():
+                        warnings.filterwarnings('ignore', message='.*Javascript library not loaded.*')
+                        # Render SHAP force plot
+                        force_plot = shap.force_plot(
+                            explainer.expected_value,
+                            shap_values_obj.values[idx],
+                            data_for_shap.iloc[idx, :],
+                            matplotlib=False
+                        )
+                        display(IHTML(force_plot.html()))
+                except Exception as e:
+                    print(f"ℹ️ Interactive SHAP visualization unavailable (static plots available in Evaluation Plots tab)")
 
         explain_button.on_click(on_explain_click)
         

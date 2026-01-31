@@ -57,7 +57,20 @@ def generate_shap_explainer_and_values(model: Any, X_data: pd.DataFrame, config:
             "data_for_shap": data_for_shap
         }
     except Exception as e:
-        print(f"⚠️ SHAP explainer creation failed: {e}")
+        # Some models (e.g., GaussianNB, SVC, SVR) may not support SHAP
+        # This is expected behavior, not an error
+        model_name = classifier.__class__.__name__
+        unsupported_models = ['GaussianNB', 'SVC', 'SVR']
+
+        if model_name in unsupported_models:
+            print(f"ℹ️  SHAP not available for {model_name} (expected limitation)")
+            print(f"   This model doesn't expose probability/decision functions needed for SHAP.")
+            print(f"   Feature importance will use alternative methods (coefficients, permutation).")
+        else:
+            # Unexpected error for models that should support SHAP
+            print(f"⚠️ SHAP explainer creation failed: {e}")
+            print(f"   Model: {model_name}")
+
         return {}
 
 def generate_all_explainers(model: Any, X_train: pd.DataFrame, config: SuiteConfig) -> Dict:

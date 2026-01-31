@@ -17,7 +17,7 @@ def configure_logging(notebook_mode: bool, logging_mode: str, log_path: Path):
         log_path (Path): The file path to save the log file to.
     """
     log_level = logging.INFO
-    
+
     if logging_mode == 'off':
         log_level = logging.CRITICAL + 1
     elif logging_mode == 'auto' and notebook_mode:
@@ -25,8 +25,12 @@ def configure_logging(notebook_mode: bool, logging_mode: str, log_path: Path):
     elif logging_mode == 'on':
         log_level = logging.INFO
 
+    # --- Suppress verbose third-party library loggers ---
+    logging.getLogger('alembic').setLevel(logging.WARNING)
+    logging.getLogger('mlflow.store.db.utils').setLevel(logging.WARNING)
+
     # --- Create separate handlers for console and file ---
-    
+
     # Get the root logger
     logger = logging.getLogger()
     logger.setLevel(log_level)
