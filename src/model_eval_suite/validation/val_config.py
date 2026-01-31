@@ -61,8 +61,6 @@ def create_suite_config_from_validation_config(config: ValidationConfig) -> Suit
     Creates a SuiteConfig object from a ValidationConfig.
     This version correctly enables plot and explainer generation.
     """
-    run_id = config.report_name
-
     paths = PathsConfig(
         input_data=config.holdout_data_path,
         reports_dir=Path("exports/reports"),

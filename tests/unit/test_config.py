@@ -32,7 +32,7 @@ class TestConfigLoading:
         with open(config_path, "w") as f:
             yaml.dump(invalid_config, f)
 
-        with pytest.raises(Exception):  # Pydantic ValidationError
+        with pytest.raises(ValueError):  # Pydantic ValidationError raises ValueError
             load_config(str(config_path))
 
     def test_config_paths_conversion(self, sample_config_dict, temp_dir):
@@ -53,7 +53,7 @@ class TestConfigLoading:
             yaml.dump(sample_config_dict, f)
 
         config = load_config(str(config_path))
-        assert config.notebook_mode == False
+        assert not config.notebook_mode
         assert config.logging == "off"
         assert config.mlflow_tracking_uri == "sqlite:///test_mlflow.db"
 

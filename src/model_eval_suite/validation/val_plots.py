@@ -27,6 +27,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from sklearn.metrics import f1_score
+from sklearn.pipeline import Pipeline
 from statsmodels.stats.proportion import proportion_confint
 
 from ..utils.config import SuiteConfig
@@ -190,7 +191,7 @@ import numpy as np
 
 
 def plot_predicted_vs_actual_with_intervals(
-    model: "Pipeline", X: pd.DataFrame, y: pd.Series, config: SuiteConfig
+    model: Pipeline, X: pd.DataFrame, y: pd.Series, config: SuiteConfig
 ) -> str | None:
     """
     Creates a Predicted vs. Actual plot with 95% prediction intervals.

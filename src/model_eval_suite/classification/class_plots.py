@@ -292,7 +292,7 @@ def plot_permutation_importance(
         importances_mean[sorted_idx],
         xerr=importances_std[sorted_idx],
         align="center",
-        error_kw=dict(lw=2, capsize=4, capthick=2, ecolor="#1f4e79"),
+        error_kw={"lw": 2, "capsize": 4, "capthick": 2, "ecolor": "#1f4e79"},
     )
     ax.set_xlabel("Mean Decrease in F1 Score")
     ax.set_title(f"Permutation Importance - {config.run_id}")

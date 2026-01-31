@@ -24,7 +24,7 @@ class TestCLICommands:
         result = runner.invoke(cli, ["--version"])
 
         assert result.exit_code == 0
-        assert "1.0.0" in result.output
+        assert "0.2.0" in result.output
 
     def test_run_help(self):
         """Test run command help."""

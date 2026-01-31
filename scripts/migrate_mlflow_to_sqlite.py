@@ -51,7 +51,7 @@ def main():
     print()
 
     response = input("   Continue? (yes/no): ").strip().lower()
-    if response not in ['yes', 'y']:
+    if response not in ["yes", "y"]:
         print("\n❌ Migration cancelled.")
         return
 
@@ -65,7 +65,7 @@ def main():
 
     # Check for mlflow-export-import
     try:
-        import mlflow_export_import
+        import mlflow_export_import  # noqa: F401
     except ImportError:
         print("\n❌ Error: mlflow-export-import not installed")
         print("\n   Install it with:")
@@ -109,6 +109,7 @@ def main():
     print("   2. Run your notebook - mlflow.db will be created automatically")
     print()
     print("=" * 70)
+
 
 if __name__ == "__main__":
     main()

@@ -103,5 +103,5 @@ class TestPipelineFactory:
         }
 
         # Should raise an error or return None - check implementation
-        with pytest.raises(Exception):
-            pipeline = pipeline_factory(config)
+        with pytest.raises(ValueError):
+            pipeline_factory(config)
