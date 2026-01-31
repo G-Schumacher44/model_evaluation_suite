@@ -1,6 +1,8 @@
-import shap
+from typing import Any
+
 import pandas as pd
-from typing import Any, Dict
+import shap
+
 from model_eval_suite.utils.config import SuiteConfig
 
 """
@@ -15,7 +17,10 @@ This module manages SHAP-based explainability:
 Used during model evaluation to support local and global interpretation plots.
 """
 
-def generate_shap_explainer_and_values(model: Any, X_data: pd.DataFrame, config: SuiteConfig) -> Dict:
+
+def generate_shap_explainer_and_values(
+    model: Any, X_data: pd.DataFrame, config: SuiteConfig
+) -> dict:
     """Creates a SHAP explainer, calculates values, and prepares data for reuse."""
     try:
         # Extract the preprocessing steps from the pipeline (all but final estimator)
@@ -25,47 +30,43 @@ def generate_shap_explainer_and_values(model: Any, X_data: pd.DataFrame, config:
         # Apply preprocessing to input data
         X_transformed = transformer_pipeline.transform(X_data)
         # Retrieve named preprocessor to extract feature names
-        preprocessor = transformer_pipeline.named_steps['preprocessor']
+        preprocessor = transformer_pipeline.named_steps["preprocessor"]
         final_features = preprocessor.get_feature_names_out()
         # Build DataFrame from transformed data with original indexing and feature names
         X_transformed_df = pd.DataFrame(X_transformed, columns=final_features, index=X_data.index)
 
         # Initialize SHAP explainer using final classifier and transformed inputs
         explainer = shap.Explainer(classifier, X_transformed_df)
-        
+
         # Load explainability-related config from evaluation section
         expl_cfg = config.evaluation.explainability
         if not expl_cfg:
             return {}
-            
+
         # Determine if sampling is enabled for SHAP generation
-        sample_size = expl_cfg.get('shap_sample_size')
+        sample_size = expl_cfg.get("shap_sample_size")
 
         # Optionally sample a subset of data for efficiency
         if sample_size and sample_size < len(X_transformed_df):
             data_for_shap = X_transformed_df.sample(n=sample_size, random_state=42)
         else:
             data_for_shap = X_transformed_df
-            
+
         # Compute SHAP values for the (sampled or full) transformed dataset
         shap_values = explainer(data_for_shap)
-        
+
         # Return all SHAP artifacts needed downstream
-        return {
-            "explainer": explainer,
-            "shap_values": shap_values,
-            "data_for_shap": data_for_shap
-        }
+        return {"explainer": explainer, "shap_values": shap_values, "data_for_shap": data_for_shap}
     except Exception as e:
         # Some models (e.g., GaussianNB, SVC, SVR) may not support SHAP
         # This is expected behavior, not an error
         model_name = classifier.__class__.__name__
-        unsupported_models = ['GaussianNB', 'SVC', 'SVR']
+        unsupported_models = ["GaussianNB", "SVC", "SVR"]
 
         if model_name in unsupported_models:
             print(f"ℹ️  SHAP not available for {model_name} (expected limitation)")
-            print(f"   This model doesn't expose probability/decision functions needed for SHAP.")
-            print(f"   Feature importance will use alternative methods (coefficients, permutation).")
+            print("   This model doesn't expose probability/decision functions needed for SHAP.")
+            print("   Feature importance will use alternative methods (coefficients, permutation).")
         else:
             # Unexpected error for models that should support SHAP
             print(f"⚠️ SHAP explainer creation failed: {e}")
@@ -73,14 +74,15 @@ def generate_shap_explainer_and_values(model: Any, X_data: pd.DataFrame, config:
 
         return {}
 
-def generate_all_explainers(model: Any, X_train: pd.DataFrame, config: SuiteConfig) -> Dict:
+
+def generate_all_explainers(model: Any, X_train: pd.DataFrame, config: SuiteConfig) -> dict:
     """Orchestrates generation of all configured explainability objects."""
     explainer_results = {}
     expl_cfg = config.evaluation.explainability
 
-    if expl_cfg and expl_cfg.get('run_shap', False):
+    if expl_cfg and expl_cfg.get("run_shap", False):
         shap_data = generate_shap_explainer_and_values(model, X_train, config)
         if shap_data:
             explainer_results.update(shap_data)
-            
+
     return explainer_results

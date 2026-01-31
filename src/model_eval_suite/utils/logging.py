@@ -7,6 +7,7 @@ Now supports both console and file-based logging.
 import logging
 from pathlib import Path
 
+
 def configure_logging(notebook_mode: bool, logging_mode: str, log_path: Path):
     """
     Configures the root logger based on the operational context.
@@ -18,16 +19,16 @@ def configure_logging(notebook_mode: bool, logging_mode: str, log_path: Path):
     """
     log_level = logging.INFO
 
-    if logging_mode == 'off':
+    if logging_mode == "off":
         log_level = logging.CRITICAL + 1
-    elif logging_mode == 'auto' and notebook_mode:
+    elif logging_mode == "auto" and notebook_mode:
         log_level = logging.WARNING
-    elif logging_mode == 'on':
+    elif logging_mode == "on":
         log_level = logging.INFO
 
     # --- Suppress verbose third-party library loggers ---
-    logging.getLogger('alembic').setLevel(logging.WARNING)
-    logging.getLogger('mlflow.store.db.utils').setLevel(logging.WARNING)
+    logging.getLogger("alembic").setLevel(logging.WARNING)
+    logging.getLogger("mlflow.store.db.utils").setLevel(logging.WARNING)
 
     # --- Create separate handlers for console and file ---
 
@@ -41,8 +42,7 @@ def configure_logging(notebook_mode: bool, logging_mode: str, log_path: Path):
 
     # Create formatter
     formatter = logging.Formatter(
-        "%(asctime)s [%(levelname)-7s] %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S"
+        "%(asctime)s [%(levelname)-7s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
     )
 
     # Console Handler (for screen output)

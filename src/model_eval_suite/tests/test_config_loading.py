@@ -1,4 +1,5 @@
 import yaml
+
 from model_eval_suite.utils.config import load_config
 
 
@@ -19,7 +20,7 @@ def test_config_loads_successfully(tmp_path):
             "metrics_log": "data/logs/metrics_log.csv",
             "log_dir": "data/logs",
             "train_data_path": "data/train.csv",
-            "test_data_path": "data/test.csv"
+            "test_data_path": "data/test.csv",
         },
         "modeling": {
             "target_column": "churn",
@@ -27,15 +28,15 @@ def test_config_loads_successfully(tmp_path):
                 "name": "DummyClassifier",
                 "numeric_features": [],
                 "categorical_features": [],
-                "params": {}
-            }
+                "params": {},
+            },
         },
         "evaluation": {
             "run": True,
             "export_xlsx_summary": False,
             "export_html_dashboard": True,
-            "plots": {}
-        }
+            "plots": {},
+        },
     }
 
     config_path = tmp_path / "test_config.yaml"

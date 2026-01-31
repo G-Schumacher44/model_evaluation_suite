@@ -11,15 +11,20 @@ Users may override or disable feature engineering in their YAML config:
 
 To integrate a custom transformer, provide its import path and class name in the override config.
 """
+
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
+
 class HREngineer(BaseEstimator, TransformerMixin):
     """Custom transformer for the Salifort dataset."""
+
     def fit(self, X, y=None):
         return self
 
     def transform(self, X: pd.DataFrame, y=None) -> pd.DataFrame:
         X_transformed = X.copy()
-        X_transformed['project_hours_interaction'] = X_transformed['number_project'] * X_transformed['average_montly_hours']
+        X_transformed["project_hours_interaction"] = (
+            X_transformed["number_project"] * X_transformed["average_montly_hours"]
+        )
         return X_transformed

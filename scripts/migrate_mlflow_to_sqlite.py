@@ -21,11 +21,10 @@ Documentation:
     https://github.com/mlflow/mlflow-export-import
 """
 
-import os
-import sys
 import shutil
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+
 
 def main():
     print("=" * 70)

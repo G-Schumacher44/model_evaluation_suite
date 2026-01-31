@@ -21,19 +21,24 @@ Jupyter Notebook:
     from model_eval_suite.validate_champion import validate_and_display
     validate_and_display("config/validation_config.yaml")
 """
-import yaml
-import pandas as pd
-import mlflow
+
 import argparse
+
+import mlflow
+import pandas as pd
+import yaml
 from mlflow.tracking import MlflowClient
+
+from .classification.class_evaluator import (
+    orchestrate_model_evaluation as orchestrate_classification,
+)
+from .regression.reg_evaluator import orchestrate_model_evaluation as orchestrate_regression
+from .utils.export_utils import export_artifacts
+from .validation import val_plots as validation_plots  # Import the new validation-specific plots
 
 # Import the new config model and the existing core evaluators
 from .validation.val_config import ValidationConfig, create_suite_config_from_validation_config
-from .classification.class_evaluator import orchestrate_model_evaluation as orchestrate_classification
-from .regression.reg_evaluator import orchestrate_model_evaluation as orchestrate_regression
-from .utils.export_utils import export_artifacts
 from .validation.val_dashboard import display_validation_dashboard
-from .validation import val_plots as validation_plots # Import the new validation-specific plots
 
 
 def validate_and_display(config_path: str):
@@ -43,7 +48,7 @@ def validate_and_display(config_path: str):
     """
     try:
         # Load YAML validation config from file
-        with open(config_path, 'r') as f:
+        with open(config_path) as f:
             config_dict = yaml.safe_load(f)
 
         # Parse into strongly typed ValidationConfig
@@ -64,6 +69,7 @@ def validate_and_display(config_path: str):
     except Exception as e:
         print(f"🚨 An unexpected error occurred: {e}")
 
+
 def run_validation(config: ValidationConfig) -> dict:
     """Orchestrates the end-to-end champion model validation and returns the results."""
     print(f"--- 🚀 Starting Champion Model Validation: {config.report_name} ---")
@@ -76,14 +82,21 @@ def run_validation(config: ValidationConfig) -> dict:
         model_name = config.model_source.name
         model_version_str = str(config.model_source.version)
         if not model_version_str.isdigit():
-            latest_versions = client.get_latest_versions(name=model_name, stages=[model_version_str] if model_version_str != "latest" else None)
+            latest_versions = client.get_latest_versions(
+                name=model_name,
+                stages=[model_version_str] if model_version_str != "latest" else None,
+            )
             if not latest_versions:
-                raise ValueError(f"No model version found for name '{model_name}' and stage/alias '{model_version_str}'")
+                raise ValueError(
+                    f"No model version found for name '{model_name}' and stage/alias '{model_version_str}'"
+                )
             model_version = latest_versions[0].version
-            print(f"Resolved '{model_version_str}' to version {model_version} for model '{model_name}'")
+            print(
+                f"Resolved '{model_version_str}' to version {model_version} for model '{model_name}'"
+            )
         else:
             model_version = model_version_str
-        
+
         champion_model_uri = f"models:/{model_name}/{model_version}"
         print(f"Loading model from: {champion_model_uri}")
         model = mlflow.sklearn.load_model(champion_model_uri)
@@ -98,7 +111,9 @@ def run_validation(config: ValidationConfig) -> dict:
         print(f"🚨 MLflow Error: Could not load model '{config.model_source.name}'. Details: {e}")
         return {}
     except FileNotFoundError:
-        print(f"🚨 File Not Found Error: Could not find holdout data at '{config.holdout_data_path}'.")
+        print(
+            f"🚨 File Not Found Error: Could not find holdout data at '{config.holdout_data_path}'."
+        )
         return {}
     except Exception as e:
         print(f"🚨 An unexpected error occurred during setup: {e}")
@@ -107,30 +122,40 @@ def run_validation(config: ValidationConfig) -> dict:
     # --- Step 2: Evaluate Baseline Model (if specified) ---
     baseline_metrics = None
     suite_config = create_suite_config_from_validation_config(config)
-    
+
     if config.baseline_model:
         try:
             baseline_uri = f"models:/{config.baseline_model.name}/{config.baseline_model.version}"
             print(f"Loading baseline model from: {baseline_uri}")
             baseline_model = mlflow.sklearn.load_model(baseline_uri)
-            
+
             baseline_results = {}
             estimator_name = model.steps[-1][1].__class__.__name__
             task_type = "regression" if "Regressor" in estimator_name else "classification"
             suite_config.task_type = task_type
 
-            print(f"Evaluating baseline model...")
+            print("Evaluating baseline model...")
             if task_type == "classification":
                 orchestrate_classification(
-                    model=baseline_model, X_train=X_holdout, y_train=y_holdout,
-                    X_test=X_holdout, y_test=y_holdout, config=suite_config, results=baseline_results
+                    model=baseline_model,
+                    X_train=X_holdout,
+                    y_train=y_holdout,
+                    X_test=X_holdout,
+                    y_test=y_holdout,
+                    config=suite_config,
+                    results=baseline_results,
                 )
             else:
                 orchestrate_regression(
-                    model=baseline_model, X_train=X_holdout, y_train=y_holdout,
-                    X_test=X_holdout, y_test=y_holdout, config=suite_config, results=baseline_results
+                    model=baseline_model,
+                    X_train=X_holdout,
+                    y_train=y_holdout,
+                    X_test=X_holdout,
+                    y_test=y_holdout,
+                    config=suite_config,
+                    results=baseline_results,
                 )
-            baseline_metrics = baseline_results.get('metrics', {})
+            baseline_metrics = baseline_results.get("metrics", {})
         except Exception as e:
             print(f"⚠️ Warning: Failed to load or evaluate baseline model: {e}")
 
@@ -143,67 +168,87 @@ def run_validation(config: ValidationConfig) -> dict:
     results = {}
     if task_type == "classification":
         orchestrate_classification(
-            model=model, X_train=X_holdout, y_train=y_holdout,
-            X_test=X_holdout, y_test=y_holdout, config=suite_config, results=results
+            model=model,
+            X_train=X_holdout,
+            y_train=y_holdout,
+            X_test=X_holdout,
+            y_test=y_holdout,
+            config=suite_config,
+            results=results,
         )
     else:
         orchestrate_regression(
-            model=model, X_train=X_holdout, y_train=y_holdout,
-            X_test=X_holdout, y_test=y_holdout, config=suite_config, results=results
+            model=model,
+            X_train=X_holdout,
+            y_train=y_holdout,
+            X_test=X_holdout,
+            y_test=y_holdout,
+            config=suite_config,
+            results=results,
         )
 
     # Generate and Add Custom Validation Plots
     if results:
         print("Generating final assessment plots...")
         # Initialize container for validation plots
-        results.setdefault('plot_paths', {})
+        results.setdefault("plot_paths", {})
 
         # Use an if/elif block to call the correct plots for the task type
-        if task_type == 'classification':
+        if task_type == "classification":
             y_pred = model.predict(X_holdout)
-            
+
             # Generate accuracy confidence interval plot for validation dashboard
-            ci_plot_path = validation_plots.plot_accuracy_confidence_interval(y_holdout, y_pred, suite_config)
-            results['plot_paths']['accuracy_confidence_interval'] = ci_plot_path
-            
+            ci_plot_path = validation_plots.plot_accuracy_confidence_interval(
+                y_holdout, y_pred, suite_config
+            )
+            results["plot_paths"]["accuracy_confidence_interval"] = ci_plot_path
+
             if config.segmentation_columns:
                 for column in config.segmentation_columns:
                     # Generate performance by segment plot for validation dashboard
-                    segment_plot_path = validation_plots.plot_performance_by_segment(X_holdout, y_holdout, y_pred, column, suite_config)
-                    results['plot_paths'][f'segment_performance_{column}'] = segment_plot_path
+                    segment_plot_path = validation_plots.plot_performance_by_segment(
+                        X_holdout, y_holdout, y_pred, column, suite_config
+                    )
+                    results["plot_paths"][f"segment_performance_{column}"] = segment_plot_path
 
-        elif task_type == 'regression':
+        elif task_type == "regression":
             y_pred = model.predict(X_holdout)
 
             # Generate predicted vs actual with intervals plot for validation dashboard
-            interval_plot_path = validation_plots.plot_predicted_vs_actual_with_intervals(model, X_holdout, y_holdout, suite_config)
+            interval_plot_path = validation_plots.plot_predicted_vs_actual_with_intervals(
+                model, X_holdout, y_holdout, suite_config
+            )
             if interval_plot_path:
-                 results['plot_paths']['pred_vs_actual_intervals'] = interval_plot_path
+                results["plot_paths"]["pred_vs_actual_intervals"] = interval_plot_path
 
             if config.segmentation_columns:
                 for column in config.segmentation_columns:
                     # Generate residuals by segment plot for validation dashboard
-                    segment_plot_path = validation_plots.plot_residuals_by_segment(X_holdout, y_holdout, y_pred, column, suite_config)
-                    results['plot_paths'][f'segment_residuals_{column}'] = segment_plot_path
+                    segment_plot_path = validation_plots.plot_residuals_by_segment(
+                        X_holdout, y_holdout, y_pred, column, suite_config
+                    )
+                    results["plot_paths"][f"segment_residuals_{column}"] = segment_plot_path
 
     # Compute delta metrics if baseline metrics are available
     if baseline_metrics:
-        results['baseline_metrics'] = baseline_metrics
-        results['comparison_metrics'] = {}
-        for key, value in results.get('metrics', {}).items():
+        results["baseline_metrics"] = baseline_metrics
+        results["comparison_metrics"] = {}
+        for key, value in results.get("metrics", {}).items():
             if key in baseline_metrics:
                 try:
                     delta = value - baseline_metrics[key]
-                    results['comparison_metrics'][key] = {
-                        'value': value,
-                        'baseline': baseline_metrics[key],
-                        'delta': delta
+                    results["comparison_metrics"][key] = {
+                        "value": value,
+                        "baseline": baseline_metrics[key],
+                        "delta": delta,
                     }
                     # Optionally include stddevs if available in either set
-                    if 'stddevs' in results and key in results['stddevs']:
-                        results['comparison_metrics'][key]['std'] = results['stddevs'][key]
-                    if 'stddevs' in baseline_results and key in baseline_results['stddevs']:
-                        results['comparison_metrics'][key]['baseline_std'] = baseline_results['stddevs'][key]
+                    if "stddevs" in results and key in results["stddevs"]:
+                        results["comparison_metrics"][key]["std"] = results["stddevs"][key]
+                    if "stddevs" in baseline_results and key in baseline_results["stddevs"]:
+                        results["comparison_metrics"][key]["baseline_std"] = baseline_results[
+                            "stddevs"
+                        ][key]
                 except:
                     pass  # Skip non-numeric metrics
 
@@ -213,7 +258,9 @@ def run_validation(config: ValidationConfig) -> dict:
 
     # Tag model in MLflow with validation status (e.g., "ready-for-prod")
     print(f"Tagging model version with status: '{config.production_tag}'")
-    client.set_model_version_tag(name=model_name, version=model_version, key="status", value=config.production_tag)
+    client.set_model_version_tag(
+        name=model_name, version=model_version, key="status", value=config.production_tag
+    )
 
     print(f"--- ✅ Validation Complete for {model_name} v{model_version} ---")
 
@@ -223,12 +270,14 @@ def run_validation(config: ValidationConfig) -> dict:
 def main():
     """Main entry point for CLI execution."""
     # CLI entrypoint for running validation from terminal
-    parser = argparse.ArgumentParser(description="Validate a champion model from the MLflow Registry.")
+    parser = argparse.ArgumentParser(
+        description="Validate a champion model from the MLflow Registry."
+    )
     parser.add_argument("config_path", type=str, help="Path to the validation YAML config file.")
     args = parser.parse_args()
 
     try:
-        with open(args.config_path, 'r') as f:
+        with open(args.config_path) as f:
             config_dict = yaml.safe_load(f)
 
         config = ValidationConfig(**config_dict)
@@ -241,5 +290,5 @@ def main():
         print(f"Details: {e}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
