@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [0.2.0] - 2026-01-31
+
 ### Changed
 - **BREAKING:** MLflow tracking backend now defaults to SQLite (`sqlite:///mlflow.db`) instead of filesystem (`file:./mlruns`)
   - Eliminates MLflow deprecation warnings (filesystem backend deprecated Feb 2026)
@@ -15,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `.gitignore` to include `mlflow.db` and related SQLite files, `.claudeignore` for IDE optimization
 - Improved error messages for SHAP force plot failures in dashboards (classification, regression, validation)
 - Enhanced MLflow model logging with pickle security warning suppression for trusted models
+- Updated all documentation headers in `resource_hub/` to v0.2.0 with new CI/Coverage badges
 
 ### Added
 
@@ -35,16 +40,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Warning suppression for verbose third-party library loggers (alembic, mlflow.store.db.utils)
 - Warning suppression for SHAP JavaScript library messages in interactive notebooks
 - **CI/CD Pipeline**: GitHub Actions workflow for automated testing across Python 3.11/3.12 and Ubuntu/macOS
-- **Test Suite**: 68 unit and integration tests with 28% code coverage (exceeds 20% threshold)
+- **Test Suite**: 70 unit and integration tests with 28% code coverage (exceeds 25% threshold)
 - Pytest configuration with parallel execution, coverage reporting, and HTML reports
 - Test fixtures for classification/regression data and trained models
 - Comprehensive tests for config loading, model factory, logging, feature engineering, and CLI
+- New badges: CI status, Coverage, Python 3.11+, Tests passing
 
 ### Fixed
 - MLflow filesystem backend deprecation warnings no longer appear by default
 - Noisy alembic migration logs during MLflow initialization
 - Confusing SHAP force plot error messages now show user-friendly guidance
 - MLflow cloudpickle security warnings for trusted model serialization
+- CI coverage collection issues resolved with global parallel test execution disabled
 
 ---
 
@@ -98,5 +105,6 @@ See [MIGRATION.md](MIGRATION.md) for detailed instructions.
 
 ---
 
-[Unreleased]: https://github.com/yourusername/model_evaluation_suite/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/yourusername/model_evaluation_suite/releases/tag/v0.1.0
+[Unreleased]: https://github.com/G-Schumacher44/model_evaluation_suite/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/G-Schumacher44/model_evaluation_suite/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/G-Schumacher44/model_evaluation_suite/releases/tag/v0.1.0
