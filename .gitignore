@@ -54,10 +54,10 @@ pip-delete-this-directory.txt
 .pytest_cache/
 htmlcov/
 .coverage
+.coverage.*
 *.cover
 .hypothesis/
 test_mlflow.db*
-.coverage.Garretts-Mac-mini_local.pid*
 .ruff_cache/
 .mypy_cache/
 
