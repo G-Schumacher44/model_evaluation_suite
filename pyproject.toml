@@ -77,7 +77,7 @@ addopts = [
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-report=xml",
-    "--cov-fail-under=20",  # Current: 21%, Target: 50%+
+    "--cov-fail-under=50",
     "-n=auto",  # parallel execution
 ]
 filterwarnings = [
@@ -191,6 +191,7 @@ warn_redundant_casts = true
 warn_unused_ignores = false
 warn_no_return = true
 strict_equality = false  # Too strict for data science code
+incremental = false  # Disable incremental mode to avoid cache issues
 exclude = [
     "^src/model_eval_suite/tests/",  # Exclude test files
 ]

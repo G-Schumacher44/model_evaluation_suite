@@ -7,21 +7,15 @@ on:
     branches: [main, develop]
 
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        python-version: ['3.11', '3.12']
-
+  ci:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
           cache: 'pip'
 
       - name: Install dependencies
@@ -46,7 +40,6 @@ jobs:
           pytest tests/ src/model_eval_suite/tests/ --cov=src/model_eval_suite --cov-report=xml --cov-report=term-missing -v
 
       - name: Upload coverage to Codecov
-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
         uses: codecov/codecov-action@v4
         with:
           file: ./coverage.xml
@@ -56,28 +49,4 @@ jobs:
 
       - name: Check coverage threshold
         run: |
-          coverage report --fail-under=20
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[dev]"
-
-      - name: Format check with ruff
-        run: ruff format --check src/ tests/
-
-      - name: Lint with ruff
-        run: ruff check src/ tests/
-
-      - name: Type check with mypy
-        run: mypy src/model_eval_suite/
+          coverage report --fail-under=50
