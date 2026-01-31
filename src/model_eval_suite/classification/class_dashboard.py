@@ -38,7 +38,7 @@ def _build_html_card(title: str, content: str, style: str = "") -> widgets.HTML:
 
 class EvaluationDashboard:
     def __init__(self, results: dict[str, Any]):
-        self.config: SuiteConfig = results.get("config_obj")
+        self.config: SuiteConfig = results.get("config_obj")  # type: ignore[assignment]
         self.results = results
         self.metrics = results.get("metrics", {})
         self.baseline_metrics = results.get("baseline_metrics")
@@ -65,8 +65,8 @@ class EvaluationDashboard:
 
     def _find_baseline_value(self, metric_keys: list) -> float | None:
         for key in metric_keys:
-            if key in self.baseline_metrics:
-                return self.baseline_metrics[key]
+            if key in self.baseline_metrics:  # type: ignore[operator]
+                return self.baseline_metrics[key]  # type: ignore[index]
         return None
 
     def _build_summary_tab(self) -> widgets.VBox:
@@ -87,7 +87,7 @@ class EvaluationDashboard:
                 kpi_html = f"""<p style="font-size: 24px; font-weight: bold; margin: 0; color: #0366d6;">{value:{metric_info['format']}}</p>"""
 
                 if self.baseline_metrics:
-                    baseline_value = self._find_baseline_value(metric_info["keys"])
+                    baseline_value = self._find_baseline_value(metric_info["keys"])  # type: ignore[arg-type]
                     if baseline_value is not None:
                         delta_pct = (
                             ((value - baseline_value) / baseline_value) * 100

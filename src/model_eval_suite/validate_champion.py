@@ -23,6 +23,7 @@ Jupyter Notebook:
 """
 
 import argparse
+from typing import Any
 
 import mlflow
 import pandas as pd
@@ -129,7 +130,7 @@ def run_validation(config: ValidationConfig) -> dict:
             print(f"Loading baseline model from: {baseline_uri}")
             baseline_model = mlflow.sklearn.load_model(baseline_uri)
 
-            baseline_results = {}
+            baseline_results: dict[str, Any] = {}
             estimator_name = model.steps[-1][1].__class__.__name__
             task_type = "regression" if "Regressor" in estimator_name else "classification"
             suite_config.task_type = task_type
@@ -165,7 +166,7 @@ def run_validation(config: ValidationConfig) -> dict:
     suite_config.task_type = task_type
     print(f"Detected task type: {task_type}")
 
-    results = {}
+    results: dict[str, Any] = {}
     if task_type == "classification":
         orchestrate_classification(
             model=model,

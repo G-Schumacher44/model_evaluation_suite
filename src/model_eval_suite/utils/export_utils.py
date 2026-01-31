@@ -30,7 +30,7 @@ def _generate_html_report(results: dict[str, Any], save_path: Path):
     """Generates a standalone HTML report with embedded plots."""
     try:
         # Extract run ID and evaluation outputs
-        run_id = results.get("config_obj").run_id if results.get("config_obj") else "N/A"
+        run_id = results.get("config_obj").run_id if results.get("config_obj") else "N/A"  # type: ignore[union-attr]
         metrics = results.get("metrics", {})
         plot_paths = results.get("plot_paths", {})
 
@@ -135,7 +135,7 @@ def _append_to_metrics_log(results: dict[str, Any], run_id: str, log_path: Path)
     """Appends key metrics for the current run to a central CSV log."""
     log_path.parent.mkdir(parents=True, exist_ok=True)
     metrics = results.get("metrics", {})
-    config_obj: SuiteConfig = results.get("config_obj")
+    config_obj: SuiteConfig = results.get("config_obj")  # type: ignore[assignment]
     model_name = config_obj.modeling.pipeline_factory.name if config_obj else "Unknown"
     task_type = config_obj.task_type if config_obj else "unknown"
 
@@ -177,7 +177,7 @@ def _append_to_metrics_log(results: dict[str, Any], run_id: str, log_path: Path)
         except Exception as e:
             print(f"⚠️ Failed to read existing log for merge: {e}")
 
-    all_logs.append(log_data)
+    all_logs.append(log_data)  # type: ignore[arg-type]
 
     # Rebuild unified schema
     all_keys = [

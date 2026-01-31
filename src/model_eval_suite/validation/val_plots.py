@@ -135,7 +135,7 @@ def plot_performance_by_segment(
     data["pred"] = y_pred
 
     # Compute F1 per segment (exclude grouping columns to avoid pandas deprecation warning)
-    f1_scores = data.groupby(segment_column, group_keys=False).apply(
+    f1_scores = data.groupby(segment_column, group_keys=False).apply(  # type: ignore[call-overload]
         lambda g: f1_score(g["true"], g["pred"]), include_groups=False
     )
 
@@ -228,8 +228,8 @@ def plot_predicted_vs_actual_with_intervals(
     ax.plot(lims, lims, "k--", alpha=0.75, zorder=0, label="Perfect Prediction")
 
     ax.set_aspect("equal")
-    ax.set_xlim(lims)
-    ax.set_ylim(lims)
+    ax.set_xlim(lims)  # type: ignore[arg-type]
+    ax.set_ylim(lims)  # type: ignore[arg-type]
     ax.set_title("Predicted vs. Actual with 95% Prediction Intervals")
     ax.set_xlabel("Actual Values")
     ax.set_ylabel("Predicted Values")

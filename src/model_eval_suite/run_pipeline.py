@@ -51,7 +51,7 @@ def deep_merge(d1: dict, d2: dict) -> dict:
     """Recursively merges dictionary d2 into d1."""
     for k, v in d2.items():
         if isinstance(v, Mapping):
-            d1[k] = deep_merge(d1.get(k, {}), v)
+            d1[k] = deep_merge(d1.get(k, {}), v)  # type: ignore[arg-type]
         else:
             d1[k] = v
     return d1
@@ -110,10 +110,10 @@ def main(user_config_path: str | None = None):
 
     with mlflow.start_run(run_name=config.run_id):
         mlflow.log_params(
-            pd.json_normalize(config.model_dump(), sep="_").to_dict(orient="records")[0]
+            pd.json_normalize(config.model_dump(), sep="_").to_dict(orient="records")[0]  # type: ignore[arg-type]
         )
         # Initialize results dictionary for storing metrics and artifacts
-        results = {}
+        results: dict[str, Any] = {}
 
         # 7. Load original input data for diagnostics
         logging.info(f"Loading data from: {config.paths.input_data}")

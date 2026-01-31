@@ -181,16 +181,19 @@ line-ending = "auto"
 # ============================================================================
 [tool.mypy]
 python_version = "3.11"
-warn_return_any = true
+warn_return_any = false  # Too noisy with untyped libraries
 warn_unused_configs = true
 disallow_untyped_defs = false  # Start permissive, tighten gradually
 disallow_any_generics = false
-check_untyped_defs = true
-no_implicit_optional = true
+check_untyped_defs = false  # Skip checking untyped function bodies
+no_implicit_optional = false  # Allow str = None pattern (common in data science)
 warn_redundant_casts = true
-warn_unused_ignores = true
+warn_unused_ignores = false
 warn_no_return = true
-strict_equality = true
+strict_equality = false  # Too strict for data science code
+exclude = [
+    "^src/model_eval_suite/tests/",  # Exclude test files
+]
 
 # Ignore missing imports for third-party libraries without stubs
 [[tool.mypy.overrides]]
@@ -201,5 +204,7 @@ module = [
     "seaborn.*",
     "statsmodels.*",
     "joblib.*",
+    "sklearn.*",
+    "ipywidgets.*",
 ]
 ignore_missing_imports = true

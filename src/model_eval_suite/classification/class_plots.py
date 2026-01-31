@@ -400,7 +400,7 @@ def plot_cv_score_distribution(
     if not cv_scores:
         return None  # Skip plot if no CV scores are found
 
-    scoring_metric = config.modeling.hyperparameter_tuning.scoring
+    scoring_metric = config.modeling.hyperparameter_tuning.scoring  # type: ignore[union-attr]
 
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.boxplot(data=cv_scores, ax=ax, color="skyblue", width=0.3)

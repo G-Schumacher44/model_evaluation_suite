@@ -36,7 +36,7 @@ class RegressionEvaluationDashboard:
     def __init__(self, results: dict[str, Any]):
         # Extract core components from results dictionary
         self.results = results
-        self.config: SuiteConfig = results.get("config_obj")
+        self.config: SuiteConfig = results.get("config_obj")  # type: ignore[assignment]
         self.metrics = results.get("metrics", {})
         self.plot_paths = results.get("plot_paths", {})
         self.final_model = results.get("final_model")
@@ -46,8 +46,8 @@ class RegressionEvaluationDashboard:
     def _find_baseline_value(self, metric_keys: list) -> float | None:
         """Searches for the first available metric key in the baseline metrics."""
         for key in metric_keys:
-            if key in self.baseline_metrics:
-                return self.baseline_metrics[key]
+            if key in self.baseline_metrics:  # type: ignore[operator]
+                return self.baseline_metrics[key]  # type: ignore[index]
         return None
 
     def _render_banner(self) -> widgets.HTML:
@@ -112,7 +112,7 @@ class RegressionEvaluationDashboard:
                 kpi_html = f"""<p style="font-size: 24px; font-weight: bold; margin: 0; color: #0366d6;">{value:{metric_info['format']}}</p>"""
 
                 if self.baseline_metrics:
-                    baseline_value = self._find_baseline_value(metric_info["keys"])
+                    baseline_value = self._find_baseline_value(metric_info["keys"])  # type: ignore[arg-type]
                     if baseline_value is not None:
                         delta_pct = (
                             ((value - baseline_value) / baseline_value) * 100

@@ -74,7 +74,7 @@ def generate_model_metrics(
     return metrics
 
 
-def load_baseline_metrics(log_path: str, baseline_id: str | None) -> dict | None:
+def load_baseline_metrics(log_path: str | Path, baseline_id: str | None) -> dict | None:
     """
     Loads baseline metrics for a given run_id from the metrics log CSV.
     """

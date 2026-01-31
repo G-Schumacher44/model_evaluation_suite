@@ -57,7 +57,8 @@ def orchestrate_model_evaluation(
 
     # Load baseline metrics for comparison (if configured)
     results["baseline_metrics"] = class_metrics.load_baseline_metrics(
-        log_path=config.paths.metrics_log, baseline_id=config.evaluation.compare_to_baseline
+        log_path=config.paths.metrics_log,
+        baseline_id=config.evaluation.compare_to_baseline,
     )
 
     # Generate SHAP and permutation explainers (if enabled)

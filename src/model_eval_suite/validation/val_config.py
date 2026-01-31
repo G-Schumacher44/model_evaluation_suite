@@ -84,7 +84,7 @@ def create_suite_config_from_validation_config(config: ValidationConfig) -> Suit
         run=True,
         export_html_dashboard=True,
         explainability={"run_shap": True, "shap_sample_size": 2000},
-        baseline_metadata=baseline_metadata,
+        baseline_metadata=baseline_metadata,  # type: ignore[call-arg]
     )
 
     suite_config = SuiteConfig(

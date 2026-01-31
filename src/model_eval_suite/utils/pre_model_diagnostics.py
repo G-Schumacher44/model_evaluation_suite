@@ -158,7 +158,7 @@ def run_correlation_check(
         pass
 
     # Compute correlation matrix using specified method
-    corr_matrix = numeric_df.corr(method=method)
+    corr_matrix = numeric_df.corr(method=method)  # type: ignore[arg-type]
 
     # Save annotated heatmap of correlations
     if save_path:

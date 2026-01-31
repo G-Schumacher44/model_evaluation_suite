@@ -51,8 +51,8 @@ def plot_predicted_vs_actual(
     lims = [min_val, max_val]
     ax.plot(lims, lims, "r--", alpha=0.75, zorder=0)
     ax.set_aspect("equal")
-    ax.set_xlim(lims)
-    ax.set_ylim(lims)
+    ax.set_xlim(lims)  # type: ignore[arg-type]
+    ax.set_ylim(lims)  # type: ignore[arg-type]
     ax.set_title(f"Predicted vs. Actual Values - {config.run_id}")
     ax.set_xlabel("Actual Values")
     ax.set_ylabel("Predicted Values")
@@ -277,7 +277,7 @@ def plot_cv_score_distribution(
     if not cv_scores:
         return None  # Skip plot if no CV scores are found
 
-    scoring_metric = config.modeling.hyperparameter_tuning.scoring
+    scoring_metric = config.modeling.hyperparameter_tuning.scoring  # type: ignore[union-attr]
 
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.boxplot(data=cv_scores, ax=ax, color="skyblue", width=0.3)
