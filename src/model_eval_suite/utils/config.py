@@ -119,6 +119,7 @@ class SuiteConfig(BaseModel):
     pre_model_diagnostics: Optional[PreModelDiagnosticsConfig] = None # <-- ADD THIS LINE
     notebook_mode: bool = True
     logging: str = "auto"
+    mlflow_tracking_uri: str = "sqlite:///mlflow.db"  # MLflow backend URI
     paths: PathsConfig
     modeling: ModelingConfig
     evaluation: EvaluationConfig

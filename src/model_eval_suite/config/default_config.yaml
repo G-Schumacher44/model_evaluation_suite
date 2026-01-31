@@ -10,6 +10,7 @@ run_to_execute: "random_forest_classifier_run"
 base_config: &base_config
   notebook_mode: true
   logging: "auto"
+  mlflow_tracking_uri: "sqlite:///mlflow.db"  # Database backend (recommended over file:./mlruns)
 
   pre_model_diagnostics:
     run: true
@@ -93,7 +94,8 @@ logistic_regression_classifier_model: &logistic_regression_classifier_model
   numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction' ]
   categorical_features: ['Department', 'salary']
   params:
-    penalty: 'l2'
+    # Note: 'penalty' parameter deprecated in sklearn 1.8+
+    # Use 'l1_ratio' instead: l1_ratio=0 for L2, l1_ratio=1 for L1
     solver: 'liblinear'
     class_weight: 'balanced'
     random_state: 42

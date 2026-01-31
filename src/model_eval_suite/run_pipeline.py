@@ -95,7 +95,10 @@ def main(user_config_path: Optional[str] = None):
     log_file_path = config.paths.log_dir / config.run_id / f"{config.run_id}_run.log"
     configure_logging(config.notebook_mode, config.logging, log_file_path)
 
-    # 5. Start MLflow experiment and log full config
+    # 5. Configure MLflow tracking backend
+    mlflow.set_tracking_uri(config.mlflow_tracking_uri)
+
+    # 6. Start MLflow experiment and log full config
     mlflow.set_experiment(config.run_id.split('_')[0])
 
     with mlflow.start_run(run_name=config.run_id):
@@ -103,19 +106,19 @@ def main(user_config_path: Optional[str] = None):
         # Initialize results dictionary for storing metrics and artifacts
         results = {}
         
-         
-        # 6. Load original input data for diagnostics
+
+        # 7. Load original input data for diagnostics
         logging.info(f"Loading data from: {config.paths.input_data}")
         df = pd.read_csv(config.paths.input_data)
 
-        # 7. Optionally run pre-model diagnostics if enabled
+        # 8. Optionally run pre-model diagnostics if enabled
         diagnostic_results = {}
         if config.pre_model_diagnostics and config.pre_model_diagnostics.run:
                 logging.info("--- Running Pre-Modeling Diagnostics ---")
                 diagnostic_results.update(run_pre_model_diagnostics(df.copy(), config=config.model_dump()))
                 logging.info("--- Diagnostics Complete ---")
 
-        # 8. Load prepared training and testing datasets
+        # 9. Load prepared training and testing datasets
         logging.info(f"Loading train data from: {config.paths.train_data_path}")
         train_df = pd.read_csv(config.paths.train_data_path)
         
@@ -127,7 +130,7 @@ def main(user_config_path: Optional[str] = None):
         X_test = test_df.drop(columns=[config.modeling.target_column])
         y_test = test_df[config.modeling.target_column]
                
-        # 9. Build pipeline using factory method
+        # 10. Build pipeline using factory method
         pipeline = pipeline_factory(
             factory_config=config.modeling.pipeline_factory.model_dump(),
             fe_config=config.modeling.feature_engineering.model_dump() if config.modeling.feature_engineering else None
@@ -136,7 +139,7 @@ def main(user_config_path: Optional[str] = None):
         tuning_config = config.modeling.hyperparameter_tuning
         final_model: Any
 
-        # 10. Fit model (with optional hyperparameter tuning)
+        # 11. Fit model (with optional hyperparameter tuning)
         if tuning_config and tuning_config.run:
             from sklearn.model_selection import StratifiedKFold
 
@@ -172,20 +175,28 @@ def main(user_config_path: Optional[str] = None):
             final_model = pipeline
             final_model.fit(X_train, y_train)
         
-        # 11. Log trained model with input/output signature to MLflow
+        # 12. Log trained model with input/output signature to MLflow
         logging.info("Logging model to MLflow...")
         input_example = X_train.head()
         signature = infer_signature(input_example, final_model.predict(input_example))
         model_registry_name = config.modeling.pipeline_factory.registered_name or config.modeling.pipeline_factory.name
 
-        mlflow.sklearn.log_model(
-            sk_model=final_model, 
-            registered_model_name=model_registry_name,
-            signature=signature,
-            input_example=input_example
-        )
+        # Serialize model to MLflow
+        # Note: Default serialization uses cloudpickle. For production deployments
+        # with untrusted model sources, consider using serialization_format='skops'
+        # (requires: pip install skops). See MLflow docs for details.
+        import warnings
+        with warnings.catch_warnings():
+            # Suppress pickle security warning (acknowledged risk for trusted models)
+            warnings.filterwarnings('ignore', message='.*pickle.*cloudpickle.*')
+            mlflow.sklearn.log_model(
+                sk_model=final_model,
+                registered_model_name=model_registry_name,
+                signature=signature,
+                input_example=input_example
+            )
         
-        # 12. Run evaluation and collect metrics
+        # 13. Run evaluation and collect metrics
         if config.evaluation.run:
             if config.task_type == "classification":
                 from model_eval_suite.classification.class_evaluator import orchestrate_model_evaluation

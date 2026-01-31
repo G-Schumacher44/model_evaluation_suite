@@ -1,5 +1,5 @@
 # config/validation_override.yaml
-mlflow_tracking_uri: "mlruns"
+mlflow_tracking_uri: "sqlite:///mlflow.db"
 model_source:
   name: "xgbreg_demo_01"
   version: "1" 
