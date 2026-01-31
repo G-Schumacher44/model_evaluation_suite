@@ -53,6 +53,10 @@ pip-delete-this-directory.txt
 .cache/
 .pytest_cache/
 htmlcov/
+.coverage
+*.cover
+.hypothesis/
+test_mlflow.db*
 
 # Data exports
 *.csv
