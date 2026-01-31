@@ -78,7 +78,6 @@ addopts = [
     "--cov-report=html",
     "--cov-report=xml",
     "--cov-fail-under=50",
-    "-n=auto",  # parallel execution
 ]
 filterwarnings = [
     "ignore::DeprecationWarning",

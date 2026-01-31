@@ -33,7 +33,7 @@ type-check:
 
 test:
 	@echo "🧪 Running tests with coverage..."
-	pytest tests/ src/model_eval_suite/tests/ -v --cov=src/model_eval_suite --cov-report=term-missing
+	pytest tests/ src/model_eval_suite/tests/ -v --cov=src/model_eval_suite --cov-report=term-missing -n=auto
 
 test-fast:
 	@echo "⚡ Running tests (no coverage)..."
