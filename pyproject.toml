@@ -6,7 +6,7 @@ authors = [
   { name = "Garrett Schumacher", email = "me@garrettschumacher.com" }
 ]
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
   "pandas",
   "numpy",

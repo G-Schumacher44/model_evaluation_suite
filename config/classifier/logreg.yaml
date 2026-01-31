@@ -31,7 +31,7 @@ logistic_regression_classifier_run:
       numeric_features: ['number_project', 'average_montly_hours', 'time_spend_company', 'project_hours_interaction']
       categorical_features: ['Department', 'salary']
       params:
-        penalty: 'l2'
+        # Note: 'penalty' deprecated in sklearn 1.8+, removed to use default L2 regularization
         solver: 'liblinear'
         class_weight: 'balanced'
         random_state: 42
