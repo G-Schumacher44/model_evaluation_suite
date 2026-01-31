@@ -1,6 +1,6 @@
 [project]
 name = "model_eval_suite"
-version = "1.0.0"
+version = "0.2.0"
 description = "A YAML-driven ML model evaluation toolkit."
 authors = [
   { name = "Garrett Schumacher", email = "me@garrettschumacher.com" }
@@ -26,21 +26,30 @@ dependencies = [
   "openpyxl",
   "ipywidgets",
   "pydantic",
-  "protobuf<4"  # Explicitly constrain protobuf to avoid conflicts
+  "protobuf<4",  # Explicitly constrain protobuf to avoid conflicts
+  "click>=8.0",  # Modern CLI framework
+  "rich>=10.0"   # Beautiful terminal output
 ]
 
 [project.scripts]
-# Main runner for experiments
-model-eval = "model_eval_suite.runner:main"
+# Modern Click-based CLI (primary interface)
+model-eval = "model_eval_suite.cli:main"
+
+# Legacy entry points (backwards compatibility)
 prep-data = "model_eval_suite.data_prep:main"
 validate-champion = "model_eval_suite.validate_champion:main"
 
 [project.optional-dependencies]
 stats = ["statsmodels"]  # <-- MOVED HERE
 dev = [
-  "black",
-  "pylint",
-  "pytest"
+  "ruff>=0.1.0",        # Fast linter and formatter (replaces black, flake8, isort)
+  "mypy>=1.0",          # Type checking
+  "pytest>=7.0",
+  "pytest-cov>=4.0",
+  "pytest-xdist>=3.0",  # parallel test execution
+  "pytest-mock>=3.10",
+  "types-PyYAML",       # Type stubs for PyYAML
+  "pandas-stubs"        # Type stubs for pandas
 ]
 
 [tool.model_eval_suite]
@@ -51,8 +60,138 @@ where = ["src"]
 # --- CORRECTED PACKAGE LIST ---
 include = [
   "model_eval_suite",
-  "model_eval_suite.classification", 
-  "model_eval_suite.config",         
+  "model_eval_suite.classification",
+  "model_eval_suite.config",
   "model_eval_suite.modeling",
   "model_eval_suite.utils"
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src/model_eval_suite/tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--verbose",
+    "--cov=src/model_eval_suite",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+    "--cov-fail-under=20",  # Current: 21%, Target: 50%+
+    "-n=auto",  # parallel execution
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["src/model_eval_suite"]
+omit = [
+    "*/tests/*",
+    "*/__init__.py",
+    "*/run_pipeline.py",  # CLI entry point
+    "*/data_prep.py",     # CLI entry point
+    "*/validate_champion.py",  # CLI entry point
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+
+# ============================================================================
+# Ruff Configuration (Linting + Formatting)
+# ============================================================================
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+# Exclude common directories
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "build",
+    "dist",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    "*.egg-info",
+    "mlruns",
+    "exports",
+    "data",
+    "notebooks",
+]
+
+[tool.ruff.lint]
+# Enable specific rule sets
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort (import sorting)
+    "N",    # pep8-naming
+    "UP",   # pyupgrade (Python version upgrades)
+    "B",    # flake8-bugbear (common bugs)
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+    "RET",  # flake8-return
+    "PTH",  # flake8-use-pathlib
+]
+
+# Ignore specific rules
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "B008",   # do not perform function calls in argument defaults
+    "B905",   # zip() without explicit strict parameter
+    "N802",   # function name should be lowercase (scikit-learn style)
+    "N806",   # variable in function should be lowercase (scikit-learn X, y)
+    "RET504", # unnecessary variable assignment before return
+    "SIM108", # use ternary operator (sometimes less readable)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # Allow unused imports in __init__.py
+"tests/**/*.py" = ["N802", "N806"]  # Relax naming in tests
+"src/model_eval_suite/cli.py" = ["B008"]  # Allow Click defaults
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+# ============================================================================
+# Mypy Configuration (Type Checking)
+# ============================================================================
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false  # Start permissive, tighten gradually
+disallow_any_generics = false
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+strict_equality = true
+
+# Ignore missing imports for third-party libraries without stubs
+[[tool.mypy.overrides]]
+module = [
+    "shap.*",
+    "mlflow.*",
+    "xgboost.*",
+    "seaborn.*",
+    "statsmodels.*",
+    "joblib.*",
+]
+ignore_missing_imports = true
