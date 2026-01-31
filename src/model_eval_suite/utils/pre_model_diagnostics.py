@@ -127,8 +127,9 @@ def run_vif_check(
         )
 
         # --- CORRECTED: Check if legend exists before removing ---
-        if ax.get_legend() is not None:
-            ax.get_legend().remove()
+        legend = ax.get_legend()
+        if legend is not None:
+            legend.remove()
 
         ax.axvline(
             x=vif_threshold, color="red", linestyle="--", label=f"Threshold = {vif_threshold}"

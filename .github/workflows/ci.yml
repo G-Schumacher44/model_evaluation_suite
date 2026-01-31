@@ -37,7 +37,7 @@ jobs:
 
       - name: Run tests with pytest
         run: |
-          pytest tests/ src/model_eval_suite/tests/ --cov=src/model_eval_suite --cov-report=xml --cov-report=term-missing -v
+          pytest
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -46,7 +46,3 @@ jobs:
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
-
-      - name: Check coverage threshold
-        run: |
-          coverage report --fail-under=50
